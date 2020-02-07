@@ -14,7 +14,6 @@ body {
 	margin: 0;
 	padding: 0;
 	padding-top: 0;
-	box-shadow: 
 }
 
 .color_layer {
@@ -33,4 +32,49 @@ body {
 .content {
 	height: 500px;
 	font-family: sans-serif;
+}
+
+#subheader {
+	text-align:center;
+	padding-left: 30px;
+}
+
+#img-div {
+	padding-left: 200px;
+}
+
+#left-half {
+	float:left;
+}
+
+#right-half {
+	float:right;
+	width: 400px;
+	padding-left: 50px;
+	padding-right:200px;
+}
+
+.content {
+	height: 500px;
+	width: 100%;
+	font-family: sans-serif;
+	float:left;
+}
+
+#ratings-reviews {
+	padding-left:50px;
+}
+
+#header3 {
+	text-align: center;
+}
+
+#rating-content {
+	text-align: center;
+}
+
+#footer {
+	padding-top: 50%;
+	padding-left:30px;
+	position:absolute;
 }
