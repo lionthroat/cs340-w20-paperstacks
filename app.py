@@ -6,6 +6,10 @@ app = Flask(__name__)
 def hello():
     return render_template('template.html')
 
+@app.route('/book')
+def book():
+    return render_remplate('book.html')
+
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))
