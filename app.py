@@ -8,7 +8,7 @@ def hello():
 
 @app.route('/book')
 def book():
-    return render_remplate('book.html')
+    return render_template('book.html')
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
