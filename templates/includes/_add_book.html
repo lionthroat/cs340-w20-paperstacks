@@ -1,0 +1,135 @@
+{% block body %}
+  <div class="custom-add-book-box jumbotron text-center mt-4">
+    <h2 class="name">Add New Book: </h2>
+    <div class="master-filter-container container mt-4"><!-- begin search filters-->
+      <div class="filter-container">
+          <div class="first-filter-set"><!-- title, author, ISBN, year filters -->
+            <div class="filter-input-container">
+              <label for="filter-text" class="filter-input-label">Title: </label>
+              <input type="text" name="filter-text" id="filter-text" class="filter-input" placeholder="Harry Potter">
+            </div>
+
+            <div class="filter-input-container">
+              <label for="filter-author" class="filter-input-label">Author: </label>
+              <input type="text" name="filter-author" id="filter-author" class="filter-input" placeholder="J.K. Rowling">
+            </div>
+            <div class="filter-input-container">
+              <label for="filter-author" class="filter-input-label">(Optional) Second Author: </label>
+              <input type="text" name="filter-author" id="filter-author" class="filter-input" placeholder="J.K. Rowling">
+            </div>
+            <div class="filter-input-container">
+              <label for="filter-ISBN" class="filter-input-label">ISBN-10: </label>
+              <input type="number" name="filter-ISBN" id="filter-ISBN" class="filter-input" placeholder="98735513209">
+            </div>
+
+            <div class="filter-input-container">
+              <label for="filter-year" class="filter-input-label">Year Published: </label>
+              <input type="number" name="filter-year" id="filter-year" class="filter-input" placeholder="1988">
+            </div>
+          </div><!-- end first filter set: title, author, ISBN, year -->
+
+          <!-- genre filters -->
+          <div class="filter-input-container genre-container">
+            <fieldset id="filter-genre" class="filter-fieldset">
+              <h5>Genre(s) - pick at least one</h5>
+              <div class="row">
+                <div class="col">
+                  <div>
+                    <input type="checkbox" name="filter-genre" id="filter-genre-art" value="art">
+                    <label for="filter-genre-art">Art</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="filter-genre" id="filter-genre-biography" value="biography">
+                    <label for="filter-genre-biography">Biography</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="filter-genre" id="filter-genre-business" value="business">
+                    <label for="filter-genre-business">Business</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="filter-genre" id="filter-genre-childrens" value="childrens">
+                    <label for="filter-genre-childrens">Children's Books</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="filter-genre" id="filter-genre-classics" value="classics">
+                    <label for="filter-genre-classics">Classics</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="filter-genre" id="filter-genre-cookbooks" value="cookbooks">
+                    <label for="filter-genre-cookbooks">Cookbooks</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="filter-genre" id="filter-genre-fantasy" value="fantasy">
+                    <label for="filter-genre-fantasy">Fantasy</label>
+                  </div>
+                </div><!--end column-->
+                <div class="col">
+                <div>
+                  <input type="checkbox" name="filter-genre" id="filter-genre-fiction" value="fiction">
+                  <label for="filter-genre-fiction">Fiction</label>
+                </div>
+                <div>
+                  <input type="checkbox" name="filter-genre" id="filter-genre-historical-fiction" value="historical-fiction">
+                  <label for="filter-genre-historical-fiction">Historical Fiction</label>
+                </div>
+                <div>
+                  <input type="checkbox" name="filter-genre" id="filter-genre-history" value="history">
+                  <label for="filter-genre-history">History</label>
+                </div>
+                <div>
+                  <input type="checkbox" name="filter-genre" id="filter-genre-memoir" value="memoir">
+                  <label for="filter-genre-memoir">Memoir</label>
+                </div>
+                <div>
+                  <input type="checkbox" name="filter-genre" id="filter-genre-music" value="music">
+                  <label for="filter-genre-music">Music</label>
+                </div>
+                <div>
+                  <input type="checkbox" name="filter-genre" id="filter-genre-mystery" value="mystery">
+                  <label for="filter-genre-mystery">Mystery</label>
+                </div>
+                <div>
+                  <input type="checkbox" name="filter-genre" id="filter-genre-nonfiction" value="nonfiction">
+                  <label for="filter-genre-nonfiction">Nonfiction</label>
+                </div>
+                </div><!--end column-->
+                <div class="col">
+                  <div>
+                    <input type="checkbox" name="filter-genre" id="filter-genre-poetry" value="poetry">
+                    <label for="filter-genre-poetry">Poetry</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="filter-genre" id="filter-genre-romance" value="romance">
+                    <label for="filter-genre-romance">Romance</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="filter-genre" id="filter-genre-science" value="science">
+                    <label for="filter-genre-science">Science</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="filter-genre" id="filter-genre-science-fiction" value="science-fiction">
+                    <label for="filter-genre-science-fiction">Science Fiction</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="filter-genre" id="filter-genre-self-help" value="self-help">
+                    <label for="filter-genre-self-help">Self Help</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="filter-travel" id="filter-travel" value="travel">
+                    <label for="filter-travel">Travel</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="filter-young-adult" id="filter-young-adult" value="young-adult">
+                    <label for="filter-young-adult">Young Adult</label>
+                  </div>
+                </div><!--end column-->
+              </div><!--end row-->
+            </fieldset>
+          </div>
+          <!-- end genre filters -->
+          <button id="filter-update-button" class="action-button">Add Book to Paperstacks</button>
+
+      </div>
+    </div><!-- end search filters -->
+  </div><!-- end search block -->
+{% endblock %}

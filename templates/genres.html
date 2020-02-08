@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+  <div class="container mt-5 mb-5">
+    <h4 class="name">Genres</h4>
+
+    <ul class="list-group">
+      {% for genre in genres %}
+        <li class="list-group-item">
+          <p>{{genre.name}}</p>
+          {% set gid = genre.id %}
+          {% for book in books %}
+            {% if gid == book.genre_id %}
+              <p><a href="book/{{book.id}}">{{book.title}}</a></p>
+            {% endif %}
+          {% endfor %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+{% endblock %}

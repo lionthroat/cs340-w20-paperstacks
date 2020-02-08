@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+  <h1>Tomes</h1>
+
+  <ul class="list-group">
+    {% for tome in tomes %}
+      <li class="list-group-item">
+        <a href="tome/{{tome.id}}">{{tome.title}}</a>
+      </li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}
