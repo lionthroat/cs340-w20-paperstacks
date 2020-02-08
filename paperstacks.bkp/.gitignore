@@ -1,8 +1,0 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-
-# Virtual Environment
-venv
-
-db_credentials.py
