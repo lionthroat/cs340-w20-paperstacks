@@ -17,6 +17,14 @@ def index():
 def about():
     return render_template('about.html')
 
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
 if __name__ == '__main__':
     app.run()
 
@@ -48,14 +56,6 @@ if __name__ == '__main__':
 # def search(): # view functions must have unique names or everything breaks
 #     return render_template('search.html')
 #
-# @app.route('/privacy')
-# def privacy():
-#     return render_template('privacy.html')
-#
-# @app.errorhandler(404)
-# def page_not_found(e):
-#     # note that we set the 404 status explicitly
-#     return render_template('404.html'), 404
 
 # @app.route('/diagnostic')
 # def fetch_diagnostic():
