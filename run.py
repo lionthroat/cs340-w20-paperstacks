@@ -60,6 +60,14 @@ def search(): # view functions must have unique names or everything breaks
 def sample_author():
     return render_template('sample_author.html')
 
+@app.route('/add_author')
+def add_author():
+    return render_template('add_author.html', books=Books)
+
+@app.route('/rem_author')
+def rem_author():
+    return render_template('rem_author.html')
+
 @app.route('/about')
 def about():
     return render_template('about.html')

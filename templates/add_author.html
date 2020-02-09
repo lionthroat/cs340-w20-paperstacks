@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <div class="custom-add-book-box jumbotron text-center mt-4">
+    <div class="row">
+      <div class="col">
+        <h2 class="name">Add New Author: </h2>
+        <p>Note: an Author MUST be associated with at least one book. Please assign the author to a book in our database, or add the book first.</p>
+        <div class="filter-input-container">
+          <label for="filter-author" class="filter-input-label">Author Name: </label>
+          <input type="text" name="filter-author" id="filter-author" class="filter-input" placeholder="Toni Morrison">
+        </div>
+        <div class="filter-input-container">
+          <label for="filter-author" class="filter-input-label">Author Bio: </label>
+          <input type="textarea" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="Write a blurb here">
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4 mb-4">
+      <div class="col">
+        <h5>What book did they write? (select one for now, more can be added later): </h5>
+        <div class="filter-input-container">
+          <label for="filter-author-book" class="filter-input-label">Book title: </label>
+          <select name="author-book-selection">
+            {% for book in books %}
+            <option value="{{book.id}}">{{book.title}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button id="filter-update-button" class="action-button">Add Author to Paperstacks</button>
+      </div>
+    </div>
+  </div>
+{% endblock %}

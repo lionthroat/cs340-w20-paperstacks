@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+content
+  <div class="custom-add-book-box jumbotron text-center mt-4">
+    <h2 class="name">Remove Author: </h2>
+    <p>Warning: This action is permanent. If an author's books are still in the database, the listed author on those titles will be set to NULL.</p>
+    <div class="filter-input-container">
+      <label for="filter-remove-author" class="filter-input-label">Author Name: </label>
+      <select name="remove-author-selection">
+        <option value="1">[ List of Authors ]</option>
+        <option value="2">[ Candy M. Sparrow ]</option>
+        <option value="3">[ An Actual Squid ]</option>
+        <option value="4">[ Mustachioid Mystery Author ]</option>
+        <option value="5">[ Proust ]</option>
+        <option value="6">[ Nietzche ]</option>
+        <option value="7">[ Luna Lovegood ]</option>
+      </select>
+    </div>
+    <button id="filter-update-button" class="action-button">Remove from Paperstacks</button>
+  </div>
+{% endblock %}
