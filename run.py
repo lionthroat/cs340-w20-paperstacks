@@ -21,6 +21,18 @@ def books():
 def book(id):
     return render_template('book.html', id=id, book=Books[int(id)-1])
 
+@app.route('/genres')
+def genres():
+    return render_template('genres.html', genres=Genres, books=Books)
+
+@app.route('/genre/<string:id>/')
+def genre(id):
+    return render_template('genre.html', id=int(id), genres=Genres, books=Books)
+
+@app.route('/search')
+def search(): # view functions must have unique names or everything breaks
+    return render_template('search.html')
+
 @app.route('/about')
 def about():
     return render_template('about.html')
@@ -43,18 +55,6 @@ if __name__ == '__main__':
 #     # Bind to PORT if defined, otherwise default to 5000.
 #     port = int(os.environ.get('PORT', 5000))
 #     app.run(host='0.0.0.0', port=port, debug=True)
-#
-# @app.route('/genres')
-# def genres():
-#     return render_template('genres.html', genres=Genres, books=Books)
-#
-# @app.route('/genre/<string:id>/')
-# def genre(id):
-#     return render_template('genre.html', id=int(id), genres=Genres, books=Books)
-#
-# @app.route('/search')
-# def search(): # view functions must have unique names or everything breaks
-#     return render_template('search.html')
 #
 # @app.route('/diagnostic')
 # def fetch_diagnostic():
