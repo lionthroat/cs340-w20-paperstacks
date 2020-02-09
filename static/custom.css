@@ -1,27 +1,18 @@
 /* navbar styles */
 .navbar {
 	padding: 0;
-}
-
-.custom_nav_img {
-	background-image: url("patrick-tomasso-Oaqk7qqNh_c-unsplash.jpg");
+	min-height: 120px;
+	background: url("books-vignette.jpg") repeat top left;
 	background-size: 100% Auto;
-	width: 100%;
-	height: 100%;
-}
-
-.custom_nav_lighten {
-	background-color:rgba(248,247,216,0.5);
-  width:100%;
-  height:100%;
 }
 
 .custom_title {
 	padding:20px;
 	padding-left:20px;
-	font-size: 34px;
-	font-family: 'Avenir', Helvetica, Arial, sans-serif!important;
-	font-weight: bold;
+	font-size: 22px;
+	font-family: 'Gentium Book Basic', serif; /* Removed Avenir as first because it's an expensive font to license */
+	font-weight: 700;
+	color: white;
 }
 
 .custom_title:hover {
@@ -31,7 +22,7 @@
 	font-weight: bold;
 	margin-left: 5px;
 	margin-bottom: 5px;
-	opacity: 1!important;
+	background-color: white;
 }
 
 .nav-item:hover {
