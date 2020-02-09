@@ -68,6 +68,18 @@ def add_author():
 def rem_author():
     return render_template('rem_author.html')
 
+@app.route('/sample_review')
+def sample_review():
+    return render_template('sample_review.html')
+
+@app.route('/sample_rating')
+def sample_rating():
+    return render_template('sample_rating.html')
+
+@app.route('/add_review')
+def add_review():
+    return render_template('add_review.html', books=Books)
+
 @app.route('/about')
 def about():
     return render_template('about.html')

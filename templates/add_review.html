@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <div class="custom-add-book-box jumbotron text-center mt-4">
+    <div class="row">
+      <div class="col">
+        <h2 class="name">Rate and Review: </h2>
+
+        <h5>What book would you like to rate? </h5>
+        <div class="filter-input-container">
+          <label for="filter-author-book" class="filter-input-label">Book title: </label>
+          <select name="author-book-selection">
+            {% for book in books %}
+            <option value="{{book.id}}">{{book.title}}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="filter-input-container">
+          <label for="filter-user-star-rating" class="filter-input-label">Your Rating: </label>
+          <select name="user-star-rating">
+            <option value="five-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
+            <option value="four-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</option>
+            <option value="three-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</option>
+            <option value="two-stars">&#9733;&#9733;&#9734;&#9734;&#9734;</option>
+            <option value="one-stars">&#9733;&#9734;&#9734;&#9734;&#9734; :(</option>
+          </select>
+        </div>
+
+        <div class="filter-input-container">
+          <label for="filter-author" class="filter-input-label">Review (Optional): </label>
+          <input type="textarea" name="filter-author" id="filter-author" rows="4" class="filter-input form-control" style="height: 120px;" placeholder="Write a descriptive review that will help other readers">
+        </div>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}
