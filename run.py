@@ -1,26 +1,37 @@
-from flask import Flask, render_template
-from flask import request, redirect
-# from db_connector.db_connector import connect_to_database, execute_query
+from flask import Flask
 
-# Pseudo-database for now
-# from sample_book_data.bookData import Books
-# from sample_book_data.genreData import Genres
-# # Save the return value of Books and Genres to new lists variables
-# Books = Books()
-# Genres = Genres()
-
-#create the web application
 app = Flask(__name__)
 
 @app.route('/')
-def hello():
-    return "<h1>Ok, kinda working...</h1>"
+def hello_world():
+    return 'Hello World!'
 
 if __name__ == '__main__':
-    # Bind to PORT if defined, otherwise default to 5000.
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
-    
+    app.run()
+
+# from flask import Flask, render_template
+# from flask import request, redirect
+# # from db_connector.db_connector import connect_to_database, execute_query
+#
+# # Pseudo-database for now
+# # from sample_book_data.bookData import Books
+# # from sample_book_data.genreData import Genres
+# # # Save the return value of Books and Genres to new lists variables
+# # Books = Books()
+# # Genres = Genres()
+#
+# #create the web application
+# app = Flask(__name__)
+#
+# @app.route('/')
+# def hello():
+#     return "<h1>Ok, kinda working...</h1>"
+#
+# if __name__ == '__main__':
+#     # Bind to PORT if defined, otherwise default to 5000.
+#     port = int(os.environ.get('PORT', 5000))
+#     app.run(host='0.0.0.0', port=port, debug=True)
+#
 # def index():
 #     return render_template('home.html')
 
