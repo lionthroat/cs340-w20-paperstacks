@@ -22,7 +22,7 @@ def rem_book():
 
 @app.route('/sample_book')
 def sample_book():
-    return render_template('sample_book.html')
+    return render_template('book.html', id=0, book=Books[0])
 
 @app.route('/books')
 def books():
