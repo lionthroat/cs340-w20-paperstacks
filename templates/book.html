@@ -2,21 +2,22 @@
 
 {% block body %}
   <div class="jumbotron text-center mt-4">
-      <h3 class="subheader"> {{book.title}} </h3>
-        <div class="left-half">
-          <div class="book-cover"></div>
-            <p>by {{book.author}}</p>
-            <p><b>Genre:</b> {{book.genre}}<br>
-            <b>Year Published:</b> {{book.year_published}}<br>
-              <b>ISBN:</b> {{book.isbn}}
-            </p>
-          </div>
-
-        <div class="right-half" align="right">
-          <p> {{book.blurb}}
-          </p>
+    <div class="row">
+      <div class="col">
+        <div class="book-cover">
+          <img src= {{ url_for('static', filename = '../static/crayons-quit.jpg') }} width="400" height="400" alt="previous" title="Previous" border="0">
         </div>
-    </div>
+      </div>
+      <div class="col">
+        <h3 class="subheader"> {{book.title}} </h3>
+        <p>by {{book.author}}</p>
+        <p><b>Genre:</b> {{book.genre}}<br>
+        <b>Year Published:</b> {{book.year_published}}<br>
+          <b>ISBN:</b> {{book.isbn}}
+        </p>
+        <p> {{book.blurb}}
+        </p>
+      </div>
   <div class="jumbotron text-center mt-4">
     <div class="ratings-reviews">
       <h3 class="header3"> Ratings</h3>

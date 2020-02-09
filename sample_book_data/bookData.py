@@ -3,6 +3,7 @@ def Books():
         {
             'id': 1,
             'isbn': '0399255373',
+            'cover': 'crayons-quit.jpg',
             'title':'The Day the Crayons Quit',
             'genre_id': 4,
             'genre': 'Children\'s Books',
@@ -14,6 +15,7 @@ def Books():
         {
             'id': 2,
             'isbn': '0765378388',
+            'cover': 'crayons-quit.jpg',
             'title':'The Calculating Stars: A Lady Astronaut Novel',
             'genre_id': 18,
             'genre': 'Science Fiction',
@@ -25,6 +27,7 @@ def Books():
         {
             'id': 3,
             'isbn': '1476753830',
+            'cover': 'crayons-quit.jpg',
             'title':'Salt, Fat, Acid, Heat: Mastering the Elements of Good Cooking',
             'genre_id': 6,
             'genre': 'Cookbooks',
@@ -36,6 +39,7 @@ def Books():
         {
             'id': 4,
             'isbn': '1416590323',
+            'cover': 'crayons-quit.jpg',
             'title':'Frederick Douglass: Prophet of Freedom',
             'genre_id': 2,
             'genre': 'Biography',
@@ -47,6 +51,7 @@ def Books():
         {
             'id': 5,
             'isbn': '0297859382',
+            'cover': 'crayons-quit.jpg',
             'title':'Gone Girl',
             'genre_id': 13,
             'genre': 'Mystery & Thriller',
@@ -58,6 +63,7 @@ def Books():
         {
             'id': 6,
             'isbn': '0984782850',
+            'cover': 'crayons-quit.jpg',
             'title':'Cracking the Coding Interview: 189 Programming Questions and Solutions',
             'genre_id': 3,
             'genre': 'Business',
@@ -69,6 +75,7 @@ def Books():
         {
             'id': 7,
             'isbn': '1608468569',
+            'cover': 'crayons-quit.jpg',
             'title': 'Electric Arches',
             'genre_id': 15,
             'genre': 'Poetry',
@@ -81,6 +88,7 @@ def Books():
         {
             'id': 8,
             'isbn': '1512308056',
+            'cover': 'crayons-quit.jpg',
             'title': 'Frankenstein',
             'genre_id': 5,
             'genre': 'Classics',
@@ -92,6 +100,7 @@ def Books():
         {
             'id': 9,
             'isbn': '9780141439518',
+            'cover': 'crayons-quit.jpg',
             'title': 'Pride and Prejudice',
             'genre_id': 5,
             'genre': 'Romance',
