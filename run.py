@@ -14,11 +14,11 @@ def index():
 
 @app.route('/add_book')
 def add_book():
-    return render_template('includes/_add_book.html')
+    return render_template('includes/add_book.html')
 
 @app.route('/rem_book')
 def rem_book():
-    return render_template('includes/_rem_book.html')
+    return render_template('includes/rem_book.html')
 
 @app.route('/sample_book')
 def sample_book():
