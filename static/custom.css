@@ -36,6 +36,10 @@
 .custom-search-bar {
 	margin-right: 20px;
 }
+
+.page-footer {
+	max-height: 55px;
+}
 /* misc styles */
 .content {
 	height: 500px;
