@@ -13,6 +13,14 @@ app = Flask(__name__)
 def index():
     return render_template('home.html')
 
+@app.route('/books')
+def books():
+    return render_template('books.html', books=Books)
+
+@app.route('/book/<string:id>/')
+def book(id):
+    return render_template('book.html', id=id, book=Books[int(id)-1])
+
 @app.route('/about')
 def about():
     return render_template('about.html')
@@ -36,14 +44,6 @@ if __name__ == '__main__':
 #     port = int(os.environ.get('PORT', 5000))
 #     app.run(host='0.0.0.0', port=port, debug=True)
 #
-# @app.route('/books')
-# def books():
-#     return render_template('books.html', books=Books)
-#
-# @app.route('/book/<string:id>/')
-# def book(id):
-#     return render_template('book.html', id=id, book=Books[int(id)-1]) # I did some fancy bullshit and it worked??
-#
 # @app.route('/genres')
 # def genres():
 #     return render_template('genres.html', genres=Genres, books=Books)
@@ -56,7 +56,6 @@ if __name__ == '__main__':
 # def search(): # view functions must have unique names or everything breaks
 #     return render_template('search.html')
 #
-
 # @app.route('/diagnostic')
 # def fetch_diagnostic():
 #     print("Fetching and rendering diagnostic")
