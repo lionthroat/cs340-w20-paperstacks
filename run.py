@@ -18,7 +18,7 @@ def add_book():
 
 @app.route('/rem_book')
 def rem_book():
-    return render_template('rem_book.html')
+    return render_template('rem_book.html', books=Books)
 
 @app.route('/sample_book')
 def sample_book():
