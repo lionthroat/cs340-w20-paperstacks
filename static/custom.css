@@ -6,13 +6,13 @@
 	background-size: 100% Auto;
 }
 
-.custom_title {
+.navbar-brand {
 	padding:20px;
 	padding-left:20px;
 	font-size: 22px;
 	font-family: 'Gentium Book Basic', serif; /* Removed Avenir as first because it's an expensive font to license */
 	font-weight: 700;
-	color: white;
+	color: black;
 }
 
 .custom_title:hover {
@@ -22,12 +22,20 @@
 	font-weight: bold;
 	margin-left: 5px;
 	margin-bottom: 5px;
+	font-size: 13px;
 	background-color: white;
 }
 
 .nav-item:hover {
 }
 
+.navbar-toggler {
+	margin-right: 20px;
+}
+
+.custom-search-bar {
+	margin-right: 20px;
+}
 /* misc styles */
 .content {
 	height: 500px;
@@ -38,15 +46,6 @@
 	text-align:center;
 	padding-left: 30px;
 }
-
-/* doesn't work... was trying to get images on
-	dynamically generated pages...*/
-/* .book-cover {
-	background-image: url("../static/patrick-tomasso-Oaqk7qqNh_c-unsplash.jpg");
-	background-size: 100% Auto;
-	width: 42px;
-	height: 42px;
-} */
 
 .left-half {
 	float:left;
@@ -77,12 +76,6 @@
 .rating-content {
 	text-align: center;
 }
-
-/* #footer {
-	padding-top: 50%;
-	padding-left:30px;
-	position:absolute;
-} */
 
 .name {
 	font-family: 'Courier Prime', monospace;
