@@ -109,5 +109,29 @@ def Books():
             'author': 'Jane Austen',
             'year_published': 1813
         },
+        {
+            'id': 10,
+            'isbn': '9781615190614',
+            'cover': 'fok.jpg',
+            'title':'Forks Over Knives―The Cookbook: Over 300 Recipes for Plant-Based Eating All Through the Year',
+            'genre_id': 6,
+            'genre': 'Cookbooks',
+            'blurb':'Inner cover content will go here, a tale of struggle, love, and incompetence with a bittersweet resolution, this is definitely the book you should buy your mom for mother\'s day or whatever',
+            'author_id': 10,
+            'author': 'Del Sroufe',
+            'year_published': 2012
+        },
+        {
+            'id': 11,
+            'isbn': '1592408990',
+            'cover': 'wine.jpg',
+            'title':'Wine Folly: The Essential Guide to Wine',
+            'genre_id': 6,
+            'genre': 'Cookbooks',
+            'blurb':'Inner cover content will go here, a tale of struggle, love, and incompetence with a bittersweet resolution, this is definitely the book you should buy your mom for mother\'s day or whatever',
+            'author_id': 11,
+            'author': 'Madeline Puckette',
+            'year_published': 2015
+        },
     ]
     return books
