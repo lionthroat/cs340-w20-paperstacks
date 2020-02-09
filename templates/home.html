@@ -1,8 +1,38 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-  <div class="jumbotron text-center mt-4">
-    <h1>This is our cool database site</h1>
-    <p class="lead">This application is built on the Python Flask framework and is our partnered project for CS 340</p>
-  </div>
+    <div class="row mt-4">
+      <div class="col-3">
+        <h4 class="name">Books by Genre</h4>
+        <ul class="list-group genre-group">
+          {% for genre in genres %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <a href="genre/{{genre.id}}">{{genre.name}}</a>
+                <!-- <span class="badge badge-primary badge-pill"></span> -->
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-8 ml-4">
+        <div class="row custom-feature">
+          <h4 class="name">Featured Book</h4>
+        </div>
+        <div class="row">
+          <div class="col">
+            <img src="../static/electric-arches.jpg">
+          </div>
+          <div class="col">
+            <div class="custom-featured-book-title mt-4">{{books[6].title}}</div>
+            <div class="custom-featured-book-author">by {{books[6].author}}</div>
+            <div class="custom-featured-book-year"><b>Published:</b> {{books[6].year_published}}</div>
+            <div class="custom-featured-book-genre"><b>Genre:</b> {{books[6].genre}}</div>
+            <div class="custom-featured-book-blurb lead">{{books[6].blurb}}</div>
+          </div>
+        </div>
+        <div class="row custom-feature">
+          <h4 class="name">Search for Books...</h4>
+        </div>
+        {% include 'includes/_tiny_search.html' %}
+      </div>
+    </div>
 {% endblock %}

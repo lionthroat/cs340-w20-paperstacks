@@ -72,6 +72,7 @@ def Books():
             'title': 'Electric Arches',
             'genre_id': 15,
             'genre': 'Poetry',
+            'cover-img-url':'../static/electric-arches.jpg',
             'blurb':'Inner cover content will go here, a tale of struggle, love, and incompetence with a bittersweet resolution, this is definitely the book you should buy your mom for mother\'s day or whatever',
             'author_id': 7,
             'author': 'Eve L. Ewing',

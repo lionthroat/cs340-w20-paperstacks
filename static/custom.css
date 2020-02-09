@@ -20,9 +20,9 @@
 
 .nav-item {
 	font-weight: bold;
-	margin-left: 5px;
+	margin-left: 4px;
 	margin-bottom: 5px;
-	font-size: 13px;
+	font-size: 12px;
 	background-color: white;
 }
 
@@ -37,8 +37,46 @@
 	margin-right: 20px;
 }
 
+.custom-feature {
+	padding: 10px;
+	width: 100%;
+	border-radius: 10px;
+	background-color: #e1ede1;
+}
+
+.custom-featured-book-title {
+	font-family: 'Courier Prime', monospace;
+	font-weight: 700;
+	font-size: 18px;
+	color: black;
+}
+
+.custom-featured-book-author {
+	font-family: 'Courier Prime', monospace;
+	font-weight: 400;
+	font-size: 12px;
+	color: black;
+}
+
+.custom-featured-book-year {
+
+}
+
+.custom-featured-book-genre {
+
+}
+
+.custom-featured-book-blurb {
+
+}
+
 .page-footer {
 	max-height: 55px;
+}
+
+.genre-group {
+	font-size: 11px;
+	padding: 0;
 }
 /* misc styles */
 .content {
