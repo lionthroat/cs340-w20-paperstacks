@@ -1,33 +1,30 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-  <div class="jumbotron text-center mt-4">
-      <h3 class="subheader"> {{book.title}} </h3>
-        <div class="left-half">
-          <div class="book-cover"></div>
-            <p>by {{book.author}}</p>
-            <p><b>Genre:</b> {{book.genre}}<br>
-            <b>Year Published:</b> {{book.year_published}}<br>
-              <b>ISBN:</b> {{book.isbn}}
-            </p>
-          </div>
+	<div id="middle">
+		<div class="content">
+			<h2 id="subheader"> {Author Name Here} </h2>
+			<div id="left-half">
+				<div id="img-div">
+					<img id="author-img" src="author-silhouette.jpg" alt="This will be an image of the author" width="300" height="300">
+					<p>{Author Name}</p>
+				</div>
+			</div>
 
-        <div class="right-half" align="right">
-          <p> {{book.blurb}}
-          </p>
-        </div>
-    </div>
-  <div class="jumbotron text-center mt-4">
-    <div class="ratings-reviews">
-      <h3 class="header3"> Ratings</h3>
-      <p class="rating-content"> Average rating: [avg] out of [#] of reviews &star; &star; &star; &star; &star;
-      </p>
+			<div id="right-half" align="right">
+				<p> {Author blurb here, it'll be like a whole paragraph}
+				</p>
+			</div>
+		</div>
 
-      <h3 class="header3">Reviews</h3>
-      <p class="review-content">
-        [for each review, add field here]
-      </p>
-    </div>
-  </div>
+		<div id="author-book-list">
+			<h3 id="header3">
+				Books by {Author}
+			</h3>
+			<p id="lowercontent">
 
+			 <a href="/books.html">{List book here}</a>
+			</p>
+		</div>
+	</div>
 {% endblock %}
