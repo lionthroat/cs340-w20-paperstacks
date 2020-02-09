@@ -40,6 +40,18 @@ def genres():
 def genre(id):
     return render_template('genre.html', id=int(id), genres=Genres, books=Books)
 
+@app.route('/sample_genre')
+def sample_genre():
+    return render_template('genre.html', id=6, genres=Genres, books=Books)
+
+@app.route('/add_genre')
+def add_genre():
+    return render_template('genre.html', id=int(id), genres=Genres, books=Books)
+
+@app.route('/rem_genre')
+def rem_genre():
+    return render_template('genre.html', id=int(id), genres=Genres, books=Books)
+
 @app.route('/search')
 def search(): # view functions must have unique names or everything breaks
     return render_template('search.html')
