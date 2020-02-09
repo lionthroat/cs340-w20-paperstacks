@@ -12,6 +12,18 @@ app = Flask(__name__)
 def index():
     return render_template('home.html')
 
+@app.route('/add_book')
+def add_book():
+    return render_template('includes/_add_book.html')
+
+@app.route('/rem_book')
+def rem_book():
+    return render_template('includes/_rem_book.html')
+
+@app.route('/sample_book')
+def sample_book():
+    return render_template('includes/sample_book.html')
+
 @app.route('/books')
 def books():
     return render_template('books.html', books=Books)
@@ -31,6 +43,10 @@ def genre(id):
 @app.route('/search')
 def search(): # view functions must have unique names or everything breaks
     return render_template('search.html')
+
+@app.route('/sample_author')
+def sample_author():
+    return render_template('sample_author.html')
 
 @app.route('/about')
 def about():
