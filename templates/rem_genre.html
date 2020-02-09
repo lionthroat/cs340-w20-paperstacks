@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <div class="custom-add-book-box jumbotron text-center mt-4">
+    <h2 class="name">Remove Genre: </h2>
+    <p>Warning: You will not be able to remove a genre if it leaves one or more books without a classification</p>
+    <div class="filter-input-container">
+      <label for="filter-remove-book" class="filter-input-label">Title: </label>
+      <select name="remove-book-selection">
+        {% for genre in genres %}
+        <option value="{{genre.id}}">{{genre.name}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button id="filter-update-button" class="action-button">Remove from Paperstacks</button>
+
+  </div>
+{% endblock %}
