@@ -3,11 +3,11 @@ from flask import request, redirect
 # from db_connector.db_connector import connect_to_database, execute_query
 
 # Pseudo-database for now
-from sample_book_data.bookData import Books
-from sample_book_data.genreData import Genres
-# Save the return value of Books and Genres to new lists variables
-Books = Books()
-Genres = Genres()
+# from sample_book_data.bookData import Books
+# from sample_book_data.genreData import Genres
+# # Save the return value of Books and Genres to new lists variables
+# Books = Books()
+# Genres = Genres()
 
 #create the web application
 app = Flask(__name__)
@@ -16,38 +16,38 @@ app = Flask(__name__)
 def index():
     return render_template('home.html')
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-@app.route('/books')
-def books():
-    return render_template('books.html', books=Books)
-
-@app.route('/book/<string:id>/')
-def book(id):
-    return render_template('book.html', id=id, book=Books[int(id)-1]) # I did some fancy bullshit and it worked??
-
-@app.route('/genres')
-def genres():
-    return render_template('genres.html', genres=Genres, books=Books)
-
-@app.route('/genre/<string:id>/')
-def genre(id):
-    return render_template('genre.html', id=int(id), genres=Genres, books=Books)
-
-@app.route('/search')
-def search(): # view functions must have unique names or everything breaks
-    return render_template('search.html')
-
-@app.route('/privacy')
-def privacy():
-    return render_template('privacy.html')
-
-@app.errorhandler(404)
-def page_not_found(e):
-    # note that we set the 404 status explicitly
-    return render_template('404.html'), 404
+# @app.route('/about')
+# def about():
+#     return render_template('about.html')
+#
+# @app.route('/books')
+# def books():
+#     return render_template('books.html', books=Books)
+#
+# @app.route('/book/<string:id>/')
+# def book(id):
+#     return render_template('book.html', id=id, book=Books[int(id)-1]) # I did some fancy bullshit and it worked??
+#
+# @app.route('/genres')
+# def genres():
+#     return render_template('genres.html', genres=Genres, books=Books)
+#
+# @app.route('/genre/<string:id>/')
+# def genre(id):
+#     return render_template('genre.html', id=int(id), genres=Genres, books=Books)
+#
+# @app.route('/search')
+# def search(): # view functions must have unique names or everything breaks
+#     return render_template('search.html')
+#
+# @app.route('/privacy')
+# def privacy():
+#     return render_template('privacy.html')
+#
+# @app.errorhandler(404)
+# def page_not_found(e):
+#     # note that we set the 404 status explicitly
+#     return render_template('404.html'), 404
 
 # @app.route('/diagnostic')
 # def fetch_diagnostic():
