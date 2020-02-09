@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+{% include "includes/_add_book.html" %}
+
+  <div class="container mt-5 mb-5">
+    <h4 class="name">Books</h4>
+
+    <ul class="list-group">
+      {% for book in books %}
+        <li class="list-group-item">
+          <a href="book/{{book.id}}"><img src="../static/book-img.png" alt={{book.title}} height="42" width="42"></a>
+          <a href="book/{{book.id}}">{{book.title}}</a>
+          by {{book.author}}.
+          <p>Genre: {{book.genre}}.</p>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+{% endblock %}
