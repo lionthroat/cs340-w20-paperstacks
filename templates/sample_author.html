@@ -1,30 +1,24 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-	<div id="middle">
-		<div class="content">
-			<h2 id="subheader"> {Author Name Here} </h2>
-			<div id="left-half">
-				<div id="img-div">
-					<img id="author-img" src="author-silhouette.jpg" alt="This will be an image of the author" width="300" height="300">
-					<p>{Author Name}</p>
+		<div class="content mt-4 pt-4 pb-1 mb-1">
+			<div class="row">
+				<h4 class="name ml-4"><b>Candy M. Sparrow</b></h4>
+			</div>
+			<div class="row">
+				<div class="col-sm-3 pt-4">
+					<img id="author-img" src="../static/silhouette.png" alt="This will be an image of the author" width="200" height="200">
+				</div>
+				<div class="col-lg-8 mt-4">
+						After graduating from New York University's Tisch School of the Arts Magna Went-to-Class-Once Laude, Candy embarked on a grand adventure worthy of writing a Bildungsroman about. Thanks to a small recurring stipend from her parents, money from the extra jewels she sold, and loans from various boyfriends, Candy set out to eat, pray, and love around the world. Her gripping tales from the road (and cruise ship) range from the novel: the time the lobster bar ran out of lobster, to the downright terrifying: the late night the Starbucks was closed and she really had to pee. These formulative experiences have inspired Candy's popular Young Adult Werewolf Fashionista Romance series.
 				</div>
 			</div>
-
-			<div id="right-half" align="right">
-				<p> {Author blurb here, it'll be like a whole paragraph}
-				</p>
+		</div>
+		<div class="content mt-1 pt-1 pb-4 mb-4">
+			<div class="row">
+				<h4 class="name ml-4">Books by Candy Sparrow:</h4>
+				<a href="/books.html">{List here}</a>
 			</div>
 		</div>
 
-		<div id="author-book-list">
-			<h3 id="header3">
-				Books by {Author}
-			</h3>
-			<p id="lowercontent">
-
-			 <a href="/books.html">{List book here}</a>
-			</p>
-		</div>
-	</div>
 {% endblock %}
