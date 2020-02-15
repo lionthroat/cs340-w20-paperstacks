@@ -3,7 +3,7 @@
 {% block body %}
 
   <div class="container mt-5 mb-5">
-    <h4 class="name">Showing Books in Genre:
+    <h4 class="name">Books in Genre:
       {% for genre in genres %}
         {% if id == genre.id %}
           {{genre.name}}
@@ -20,6 +20,10 @@
           {% endfor %}
         </li>
     </ul>
+    <div>
+      <button id="edit-genre-button" class="btn btn-primary mx-2 mt-2">Edit Genre</button>
+      <button id="rem-genre-button" class="btn btn-primary mx-2 mt-2">Remove Genre</button>
+    </div>
   </div>
 
 {% endblock %}

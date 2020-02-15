@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-		<div class="content mt-4 pt-4 pb-1 mb-1">
+		<div class="content mt-4 pt-4 pb-1 mb-4">
 			<div class="row">
 				<h4 class="name ml-4"><b>Candy M. Sparrow</b></h4>
 			</div>
@@ -10,11 +10,13 @@
 					<img id="author-img" src="../static/silhouette.png" alt="This will be an image of the author" width="200" height="200">
 				</div>
 				<div class="col-lg-8 mt-4">
-						After graduating from New York University's Tisch School of the Arts Magna Went-to-Class-Once Laude, Candy embarked on a grand adventure worthy of writing a Bildungsroman about. Thanks to a small recurring stipend from her parents, money from the extra jewels she sold, and loans from various boyfriends, Candy set out to eat, pray, and love around the world. Her gripping tales from the road (and cruise ship) range from the novel: the time the lobster bar ran out of lobster, to the downright terrifying: the late night the Starbucks was closed and she really had to pee. These formulative experiences have inspired Candy's popular Young Adult Werewolf Fashionista Romance series.
+						<p>After graduating from New York University's Tisch School of the Arts Magna Went-to-Class-Once Laude, Candy embarked on a grand adventure worthy of writing a Bildungsroman about. Thanks to a small recurring stipend from her parents, money from the extra jewels she sold, and loans from various boyfriends, Candy set out to eat, pray, and love around the world. Her gripping tales from the road (and cruise ship) range from the novel: the time the lobster bar ran out of lobster, to the downright terrifying: the late night the Starbucks was closed.</p>
 				</div>
 			</div>
-		</div>
-		<div class="content mt-1 pt-1 pb-4 mb-4">
+			<div class="row mt-4 pt-1 pb-4 mb-4">
+      	<button id="edit-author-button" class="btn btn-primary mx-2">Edit Author</button>
+      	<button id="rem-author-button" class="btn btn-primary mx-2">Remove Author</button>
+			</div>
 			<div class="row">
 				<h4 class="name ml-4">Books by Candy Sparrow:</h4>
 				<a href="/books.html">{List here}</a>

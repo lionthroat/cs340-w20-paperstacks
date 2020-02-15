@@ -10,7 +10,9 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('home.html', genres=Genres, books=Books)
+    # Want to implement this... how?
+    BooksPerGenre = []
+    return render_template('home.html', genres=Genres, books=Books, count=BooksPerGenre)
 
 @app.route('/add_book')
 def add_book():
