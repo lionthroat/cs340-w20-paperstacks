@@ -16,8 +16,17 @@
               <input type="text" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="J.K. Rowling">
             </div>
             <div class="filter-input-container">
+            	<!---
               <label for="filter-author" class="filter-input-label">(Optional) Second Author: </label>
-              <input type="text" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="J.K. Rowling">
+              <input type="text" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="J.K. Rowling">-->
+              <div id="author_drop" class="dropdown">
+              	<button onclick="showAuthors()" class="btn">Select Author</button>
+              	<div id="author_down" class="dropdown-content">
+              		<input type="text" placeholder="J.K. Rowling" class="filter-input form-control" id="author_drop_search" onkeyup="filterAuthors()">
+              		<button id="auth"> Author Name 1</button>
+              		<button id="auth"> Author Name 2</button>
+              	</div>
+
             </div>
             <div class="filter-input-container">
               <label for="filter-ISBN" class="filter-input-label">ISBN-10: </label>
