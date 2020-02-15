@@ -154,7 +154,7 @@
 }
 
 .dropdown-content auth {
-	display:block;
+	display:none;
 }
 
 .dropdown-content auth:hover {
