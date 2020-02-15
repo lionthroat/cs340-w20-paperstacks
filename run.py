@@ -56,7 +56,7 @@ def rem_genre():
 
 @app.route('/search')
 def search(): # view functions must have unique names or everything breaks
-    return render_template('search.html')
+    return render_template('search.html', genres=Genres)
 
 @app.route('/sample_author')
 def sample_author():
