@@ -78,6 +78,11 @@
 	font-size: 11px;
 	padding: 0;
 }
+
+.jumbotron {
+	background-color: #fff;
+}
+
 /* misc styles */
 .content {
 	height: 500px;
