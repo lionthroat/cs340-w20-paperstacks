@@ -5,17 +5,17 @@
 		<title>Paperstacks</title>
 		<link rel="shortcut icon" href="../static/favicon-16x16.png">
     <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic:400,700&display=swap" rel="stylesheet">
-    <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
-    <script>
-      $("#add-author").click(function() {
-        $("#author-drop").append('<input type="text" placeholder="J.K. Rowling" class="filter-input form-control" id="author_drop_search" onkeyup="filterAuthors()">');
-      })
-    </script>
+    <script
+      src="https://code.jquery.com/jquery-2.1.1.min.js"
+      integrity="sha256-h0cGsrExGgcZtSZ/fRz4AwV+Nn6Urh/3v3jFRQ0w9dQ="
+      crossorigin="anonymous"></script>
     <script language="javascript">
       function showAuthors() {
         document.getElementById("author_down").classList.toggle("show");
       }
+
       function filterAuthors() {
+        console.log("filterAuthors function called")
         let input = document.getElementById("author_drop_search");
         let filter = input.value.toUpperCase();
         let div = document.getElementById("author_down");

@@ -1,3 +1,52 @@
+      <script
+      src="https://code.jquery.com/jquery-2.1.1.min.js"
+      integrity="sha256-h0cGsrExGgcZtSZ/fRz4AwV+Nn6Urh/3v3jFRQ0w9dQ="
+      crossorigin="anonymous"></script>
+    <script language="javascript">
+    	function addAuthor() {
+    		auth_div = document.getElementById("author_drop");
+    		let to_append = document.createElement("INPUT");
+    		//<input type="text" placeholder="J.K. Rowling" class="filter-input form-control" id="author_drop_search" onkeyup="filterAuthors()" name="author_name">
+    		to_append.type="text";
+    		to_append.placeholder="J.K.Rowling";
+    		to_append.className="filter-input form-control";
+    		to_append.id="author_drop_search";
+    		to_append.name="author_name";
+    		to_append.onkeyup="filterAuthors()";
+    		auth_div.appendChild(to_append);
+    	}
+
+
+      function showAuthors() {
+        document.getElementById("author_down").classList.toggle("show");
+      }
+
+      function filterAuthors() {
+      	console.log("filter Authors function called");
+        let input = document.getElementById("author_drop_search");
+        let filter = input.value.toUpperCase();
+        let div = document.getElementById("author_down");
+        let auth = div.getElementsByTagName("auth");
+        let i = 0;
+        for (i = 0; i < auth.length; i++) {
+          textVal = auth[i].textContent || auth[i].innerText;
+          if (textVal.toUpperCase().indexOf(filter) > -1) {
+            auth[i].style.display="";
+          } else {
+            auth[i].style.display = "none";
+          }
+        }
+
+       }
+    </script>
+    <script>
+      $("#add-author").click(function() {
+      	console.log("add authors clicked");
+        $("#author-drop").append('<input type="text" placeholder="J.K. Rowling" class="filter-input form-control" id="author_drop_search" onkeyup="filterAuthors()">');
+      })
+    </script>
+
+
 {% extends 'layout.html' %}
 
 {% block body %}
@@ -20,6 +69,7 @@
             	<!---
               <label for="filter-author" class="filter-input-label">(Optional) Second Author: </label>
               <input type="text" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="J.K. Rowling">-->
+              <div id="author_section">
               <div id="author_drop" class="dropdown">
               	<!--<button onclick="showAuthors()" class="btn">Select Author</button>-->
               	<label for="author_name" class="filter-input-label">Select Author(s)</label>
@@ -29,10 +79,12 @@
               		<!--<button id="auth" class="dropdown-item" type="button"> Author Name 1</button>
               		<button id="auth" class="dropdown-item" type="button"> Author Name 2</button>-->
               	</div>
-            	<button id="add-author" class="btn btn-secondary btn-sm">
-            		<span class="glyphicon glyphicon-plus"></span> 
-            		Add Another Author
+            	</div>
+            	<button id="add-author" class="btn btn-secondary btn-sm" onclick="addAuthor()">
+            	<span class="glyphicon glyphicon-plus"></span> 
+            	Add Existing Author
             	</button>
+            	<button id="new-author" class="btn btn-secondary btn-sm" onclick="addNewAuthor()">Add New Author</button>
             </div>
             <div class="filter-input-container">
               <label for="filter-ISBN" class="filter-input-label">ISBN-10: </label>
@@ -43,26 +95,29 @@
               <label for="filter-year" class="filter-input-label">Year Published: </label>
               <input type="number" name="filter-year" id="filter-year" class="filter-input form-control" placeholder="1988">
             </div>
-          </div><!-- end first filter set: title, author, ISBN, year -->
 
-          <!-- genre filters -->
-          <div class="filter-input-container genre-container">
-            <fieldset id="filter-genre" class="filter-fieldset">
-              <h5>Genre(s) - pick at least one</h5>
-              <div class="row">
-                <div class="col">
-                  <div class="form-group">
-          			<select multiple class="form-control" id="filter-genre">
-          				{% for genre in genres %}
-            			<option>{{genre.name}}</option>
-          				{% endfor %}
-         				 </select>
-        		  </div>
-                </div><!--end column-->
-              </div><!--end row-->
-            </fieldset>
-          </div>
-          <!-- end genre filters -->
+	         <!-- genre filters -->
+	        <div class="filter-input-container">
+	            <fieldset id="filter-genre" class="filter-fieldset">
+	              <label for="genre_box" class="filter-input-label ">Genre(s)</label>
+	              <div class="row">
+	                <div class="col">
+	                  <div class="form-group" name="genre_box">
+	          			<select multiple class="form-control" id="filter-genre">
+	          				{% for genre in genres %}
+	            			<option>{{genre.name}}</option>
+	          				{% endfor %}
+	         				 </select>
+	        		  </div>
+	                </div><!--end column-->
+	              </div><!--end row-->
+	            </fieldset>
+	          </div>
+	          <!-- end genre filters -->
+
+          </div><!-- end filter set: title, author, ISBN, year -->
+
+
           <button id="filter-update-button" class="action-button btn btn-primary">Add Book to Paperstacks</button>
 
       </div>
