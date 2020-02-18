@@ -16,7 +16,7 @@ def index():
 
 @app.route('/add_book')
 def add_book():
-    return render_template('add_book.html')
+    return render_template('add_book.html', genres=Genres)
 
 @app.route('/rem_book')
 def rem_book():
