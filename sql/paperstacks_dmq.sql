@@ -10,20 +10,35 @@ select author_name from Authors;
 select book_title from Books;
 
 -- Get average rating for a given book
-select star_rating from Ratings where isbn = :ISBN_selected_from_book_page;
+select star_rating from Ratings where isbn = %ISBN_selected_from_book_page;
 
 -- Get all reviews for a given book
-select review_date, review_content from Reviews where isbn = :ISBN_selected_from_book_page;
+select review_date, review_content from Reviews where isbn = %ISBN_selected_from_book_page;
 
 -- Get all books for a given author
+select book.book_title from Books book
+inner join Books_Authors ba on ba.isbn = book.isbn
+inner join Authors auth on ba.author_id = auth.author_id
+where auth.author_id = %input_author_id
 
 -- Get all authors for a given book
+select author.author_name from Authors auth 
+inner join Books_Authors ba on ba.author_id = auth.author_id
+inner join Books book on ba.isbn = book.isbn 
+where book.isbn = %input_isbn
 
 -- Get all books in a given genre
+select book.book_title from Books book
+inner join Books_Genres bg on bg.isbn = book.isbn 
+inner join Genres g on bg.genre_id = g.genre_id 
+where g.genre_id = %input_genre_id
 
 -- Show all info for given author
+select auth.author_name, auth.author_description from Authors auth 
+where auth.author_id = %input_author_id
 
 -- Show all info for given book
+select book.book_title, book.year_published, book.book_description
 
 -- Get associated rating for a review
 
