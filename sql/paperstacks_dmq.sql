@@ -51,6 +51,9 @@ select review.review_content from Reviews review where review.rating_id = %input
 -- Get search results from submitted search page
 
 -- Get search results from simple search in navbar
+select * from Genres where genre_name.contains(%input_string);
+select * from Authors where author_name.contains(%input_string);
+select * from Books where book_title.contains(%input_string);
 
 -- ADD QUERIES --
 
