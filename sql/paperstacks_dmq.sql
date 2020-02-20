@@ -19,30 +19,35 @@ select review_date, review_content from Reviews where isbn = %ISBN_selected_from
 select book.book_title from Books book
 inner join Books_Authors ba on ba.isbn = book.isbn
 inner join Authors auth on ba.author_id = auth.author_id
-where auth.author_id = %input_author_id
+where auth.author_id = %input_author_id;
 
 -- Get all authors for a given book
 select author.author_name from Authors auth 
 inner join Books_Authors ba on ba.author_id = auth.author_id
 inner join Books book on ba.isbn = book.isbn 
-where book.isbn = %input_isbn
+where book.isbn = %input_isbn;
 
 -- Get all books in a given genre
 select book.book_title from Books book
 inner join Books_Genres bg on bg.isbn = book.isbn 
 inner join Genres g on bg.genre_id = g.genre_id 
-where g.genre_id = %input_genre_id
+where g.genre_id = %input_genre_id;
 
 -- Show all info for given author
-select auth.author_name, auth.author_description from Authors auth 
-where auth.author_id = %input_author_id
+select auth.author_name, auth.author_description from Authors auth
+where auth.author_id = %input_author_id;
 
--- Show all info for given book
-select book.book_title, book.year_published, book.book_description
+-- Show static info for given book
+select book.book_title, book.year_published, book.book_description from Books book where book.isbn = %input_isbn;
+
+-- Get ratings for a given book --
+select rating.rating_id from Ratings rating where rating.isbn = %input_isbn;
 
 -- Get associated rating for a review
+select rating.star_rating from Ratings rating where rating.review_id = %input_review_id;
 
 -- Get associated review for a rating
+select review.review_content from Reviews review where review.rating_id = %input_rating_id;
 
 -- Get search results from submitted search page
 
@@ -51,28 +56,41 @@ select book.book_title, book.year_published, book.book_description
 -- ADD QUERIES --
 
 -- Add book/author relationship --
+insert into Books_Authors (isbn, author_id) values (%input_isbn, %input_author_id);
 
 -- Add book/genre relationship --
+insert into Genres_Books(isbn, genre_id) values (%input_isbn, %input_genre_id);
 
 -- Add rating/review relationship --
+update Ratings set review_id= %review_id_input where rating_id = %input_rating_id;
+update Reviews set rating_id= %rating_id_input where review_id = %input_review_id;
 
 -- Book: add review --
+update Reviews set isbn= %input_isbn where review_id = %input_review_id;
 
 -- Book: add rating --
+update Ratings set isbn= %input_isbn where rating_id = %input_rating_id;
 
 -- Genre: add genre --
+insert into Genres (genre_name) values (%input_genre_name);;
 
 -- Author: add author --
+insert into Authors (author_name, author_description) values (%input_author_name, %input_author_description);
 
 -- Book: add book --
+insert into Books (isbn, book_title, year_published, book_description) 
+values (%input_isbn, %input_book_title, %input_year_published, %input_book_description);
 
 -- UPDATE QUERIES --
 
 -- Book: update title --
+update Books set book_title= %input_book_title where isbn= %input_isbn;
 
 -- Book: update ISBN --
+update Books set isbn= %new_isbn where isbn= %old_isbn;
 
 -- Author: update description --
+update Authors set author_description= %input_author_description where author_id= %input_author_id
 
 -- Rating: update star rating --
 
