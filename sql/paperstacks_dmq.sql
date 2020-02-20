@@ -2,7 +2,6 @@
 -- Get all genre names for listing in add book, home page, and genre list page
 select genre_name from Genres;
 
-
 -- Get all author names for listing in add book and author list page
 select author_name from Authors;
 
@@ -90,28 +89,48 @@ update Books set book_title= %input_book_title where isbn= %input_isbn;
 update Books set isbn= %new_isbn where isbn= %old_isbn;
 
 -- Author: update description --
-update Authors set author_description= %input_author_description where author_id= %input_author_id
+update Authors set author_description= %input_author_description where author_id= %input_author_id;
 
 -- Rating: update star rating --
+update Ratings set star_rating= %input_rating where rating_id=%input_id;
 
 -- Rating/review unlink --
+update Ratings set review_id=NULL where rating_id=%input_rating;
+update Reviews set rating_id=NULL where review_id=%input_review;
 
 -- Review: update content --
+update Reviews set review_content=%new_review_content where review_id=%input_id;
 
 -- Genre: update genre name --
+update Genres set genre_name=%new_name where genre_id=%input_id;
 
 -- unlink author/book --
+delete Books_Authors where isbn=%input_isbn and author_id=%input_author_id;
 
 -- unlink book/genre --
+delete Genres_Books where isbn=%input_isbn and genre_id=%input_genre_id;
 
 -- DELETE QUERIES --
 
 -- delete book --
+delete Genres_Books where isbn=%input_isbn;
+delete Reviews where isbn=%input_isbn;
+delete Ratings where isbn=%input_isbn;
+delete Books where isbn=%input_isbn;
+delete Authors_Books where isbn=%input_isbn;
 
 -- delete author --
+delete Authors_Books where author_id=%input_id;
+delete Author where author_id=%input_auth_id;
 
 -- delete genre --
+delete Genres where genre_id=%input_id;
+delete Genres_Books where genre_id=%input_id;
 
 -- delete rating --
+update Reviews set rating_id=NULL where rating_id=%input_id;
+delete Ratings where rating_id=%input_id;
 
 -- delete review --
+update Ratings set review_id=NULL where review_id=%input_id;
+delete Reviews where review_id=%input_id;
