@@ -1,3 +1,6 @@
+<script language="javascript">
+</script>
+
 {% extends 'layout.html' %}
 
 {% block body %}
@@ -15,10 +18,37 @@
 				<p><b>Book Title:</b> The Day the Crayons Quit<br>
         <p><b>Review:</b> I was promised a post-modern exploration of consumer isolation in the style of Proust, illustrating the sorrow of a colorful cast of workaday writing utensils, that, as they edge closer to their inevitable expiration, stage a mutiny--the likes of which the world has never seen. Shamefully, this book is a juvenile attempt at satire, falling far short of delivering on its premise. You'll find yourself wanting to quit long before the crayons do.
         </p>
-        <button id="edit-review" class="btn btn-secondary btn-sm" onclick="">Edit Review</button>
+        <button id="edit-review" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#edit-review-modal">Edit Review</button>
         <button id="delete-review" class="btn btn-secondary btn-sm" onclick="">Delete Review</button>
     </div>
 		</div>
   </div>
+   <div class="modal" tabindex="-1" role="dialog" area-labelledby="Edit Review" area-hidden="true" id="edit-review-modal">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Edit Review</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <div>
+                    <label for="update-book" class="filter-input-label">Update Associated Book: </label>
+                    <input type="text" name="update-book" id="update-book" class="filter-input form-control">
+
+                    <label for="update-review-content" class="filter-input-label">Update Review Content:</label>
+                    <input type="text" name="update-review-content" id="update-review-content" class="filter-input form-control" placeholder="the real review content will go here when flask is set up correctly">
+                    <label for="unlink-rating" class="filter-input-label">Unlink Associated Rating:</label>
+                    <input type="checkbox" name="unlink-rating" id="unlink-rating">
+                  </div>
+              </div> 
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" onclick="updateReview()" data-dismiss="modal">Save Changes</button>
+              </div>
+          </div>
+      </div>
+   </div>
 
 {% endblock %}
