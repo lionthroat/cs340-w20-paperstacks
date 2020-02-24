@@ -22,7 +22,6 @@ create table Books (
   `book_title` varchar(255) COLLATE utf8_unicode_ci not null,
   `year_published` int(11) not null,
   `book_description` text COLLATE utf8_unicode_ci,
-  foreign key (`author_id`) references Authors (`author_id`)
 ) engine=innodb default charset=latin1;
 
 drop table if exists Books_Authors;
