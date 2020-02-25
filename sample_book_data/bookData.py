@@ -99,7 +99,7 @@ def Books():
         },
         {
             'id': 9,
-            'isbn': '9780141439518',
+            'isbn': '0141439518',
             'cover': 'crayons-quit.jpg',
             'title': 'Pride and Prejudice',
             'genre_id': 5,
@@ -111,7 +111,7 @@ def Books():
         },
         {
             'id': 10,
-            'isbn': '9781615190614',
+            'isbn': '1615190614',
             'cover': 'fok.jpg',
             'title':'Forks Over Knives―The Cookbook: Over 300 Recipes for Plant-Based Eating All Through the Year',
             'genre_id': 6,
