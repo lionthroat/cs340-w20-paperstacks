@@ -15,10 +15,37 @@
 				<p><b>Book Title:</b> The Day the Crayons Quit<br>
         <p><b>Review:</b> I was promised a post-modern exploration of consumer isolation in the style of Proust, illustrating the sorrow of a colorful cast of workaday writing utensils, that, as they edge closer to their inevitable expiration, stage a mutiny--the likes of which the world has never seen. Shamefully, this book is a juvenile attempt at satire, falling far short of delivering on its premise. You'll find yourself wanting to quit long before the crayons do.
         </p>
-        <button id="edit-rating" class="btn btn-secondary btn-sm" onclick="">Edit Rating</button>
+        <button id="edit-rating" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#edit-rating-modal">Edit Rating</button>
         <button id="delete-rating" class="btn btn-secondary btn-sm" onclick="">Delete Rating</button>
       </div>
 		</div>
   </div>
+     <div class="modal" tabindex="-1" role="dialog" area-labelledby="Edit Rating" area-hidden="true" id="edit-rating-modal">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Edit Rating</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <div>
+                    <label for="update-book" class="filter-input-label">Update Associated Book: </label>
+                    <input type="text" name="update-book" id="update-book" class="filter-input form-control">
+
+                    <label for="update-review-content" class="filter-input-label">Update Rating:</label>
+                    <input type="dropdown" name="update-rating" id="update-rating" class="filter-input form-control">
+                    <label for="unlink-rating" class="filter-input-label">Unlink Associated Review:</label>
+                    <input type="checkbox" name="unlink-review" id="unlink-review">
+                  </div>
+              </div> 
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" onclick="updateRating()" data-dismiss="modal">Save Changes</button>
+              </div>
+          </div>
+      </div>
+   </div>
 
 {% endblock %}
