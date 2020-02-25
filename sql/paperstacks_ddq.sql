@@ -18,10 +18,10 @@ create table Authors (
 
 drop table if exists Books;
 create table Books (
-  `isbn` int(11) not null primary key unique,
+  `isbn` int(11) not null primary key,
   `book_title` varchar(255) COLLATE utf8_unicode_ci not null,
   `year_published` int(11) not null,
-  `book_description` text COLLATE utf8_unicode_ci,
+  `book_description` text COLLATE utf8_unicode_ci
 ) engine=innodb default charset=latin1;
 
 drop table if exists Books_Authors;
@@ -121,7 +121,7 @@ insert into `Authors` (author_id, author_name, author_description) values
   (120, 'Nnedi Okorafor', 'Nnedi Okorafor\’s books include Lagoon (a British Science Fiction Association Award finalist for Best Novel), Who Fears Death (a World Fantasy Award winner for Best Novel), Kabu Kabu (a Publisher\'s Weekly Best Book for Fall 2013), Akata Witch (an Amazon.com Best Book of the Year), Zahrah the Windseeker (winner of the Wole Soyinka Prize for African Literature), and The Shadow Speaker (a CBS Parallax Award winner).'),
   (121, 'Mary Roach', 'Mary Roach is the author of Grunt: The Curious Science of Humans at War, Packing for Mars: The Curious Science of Life in the Void, Bonk: The Curious Coupling of Science and Sex, Spook: Science Tackles the Afterlife, and Stiff: The Curious Lives of Human Cadavers. Her writing has appeared in Outside, Wired, National Geographic, and the New York Times Magazine, among others. She lives in Oakland, California.');
 
-insert into `Books` (isbn, book_title, year_published, genre_id, book_description) values
+insert into `Books` (isbn, book_title, year_published, book_description) values
   (0385523912, 'Nothing to Envy: Ordinary Lives in North Korea', 2013, 'Demick brings to life what it means to be living under the most repressive regime today—an Orwellian world that is by choice not connected to the Internet, where displays of affection are punished, informants are rewarded, and an offhand remark can send a person to the gulag for life. She takes us deep inside the country, beyond the reach of government censors, and through meticulous and sensitive reporting we see her subjects fall in love, raise families, nurture ambitions, and struggle for survival. One by one, we witness their profound, life-altering disillusionment with the government and their realization that, rather than providing them with lives of abundance, their country has betrayed them.'),
   (0399255370, 'The Day the Crayons Quit', 2013, 'Poor Duncan just wants to color. But when he opens his box of crayons, he finds only letters, all saying the same thing: His crayons have had enough! They quit! Beige Crayon is tired of playing second fiddle to Brown Crayon. Black wants to be used for more than just outlining. Blue needs a break from coloring all those bodies of water. And Orange and Yellow are no longer speaking—each believes he is the true color of the sun.'),
   (0765378388, 'The Calculating Stars: A Lady Astronaut Novel', 2018, 'On a cold spring night in 1952, a huge meteorite fell to earth and obliterated much of the east coast of the United States, including Washington D.C. The ensuing climate cataclysm will soon render the earth inhospitable for humanity, as the last such meteorite did for the dinosaurs. This looming threat calls for a radically accelerated effort to colonize space, and requires a much larger share of humanity to take part in the process.'),
