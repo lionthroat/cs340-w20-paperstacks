@@ -1,151 +1,140 @@
-      <script
-      src="https://code.jquery.com/jquery-2.1.1.min.js"
-      integrity="sha256-h0cGsrExGgcZtSZ/fRz4AwV+Nn6Urh/3v3jFRQ0w9dQ="
-      crossorigin="anonymous"></script>
-    <script language="javascript">
-    	function addAuthor() {
-    		auth_div = document.getElementById("author_drop");
-    		let to_append = document.createElement("INPUT");
-    		//<input type="text" placeholder="J.K. Rowling" class="filter-input form-control" id="author_drop_search" onkeyup="filterAuthors()" name="author_name">
-    		to_append.type="text";
-    		to_append.placeholder="J.K.Rowling";
-    		to_append.className="filter-input form-control";
-    		to_append.id="author_drop_search";
-    		to_append.name="author_name";
-    		to_append.onkeyup="filterAuthors()";
-    		auth_div.appendChild(to_append);
-    	}
+<!-- Receives dictionary 'authors' with keys [author_id, author_name] -->
+<!-- Receives dictionary 'genres' with keys [genre_id, genre_name] -->
 
-      function showAuthors() {
-        document.getElementById("author_down").classList.toggle("show");
-      }
+<script
+src="https://code.jquery.com/jquery-2.1.1.min.js"
+integrity="sha256-h0cGsrExGgcZtSZ/fRz4AwV+Nn6Urh/3v3jFRQ0w9dQ="
+crossorigin="anonymous"></script>
+<script language="javascript">
+function addAuthor() {
+  auth_div = document.getElementById("author_drop");
+  let to_append = document.createElement("INPUT");
+  to_append.type="text";
+  to_append.placeholder="Margaret Atwood";
+  to_append.className="form-control";
+  to_append.id="author_drop_search";
+  to_append.name="author_name";
+  to_append.onkeyup="filterAuthors()";
+  auth_div.appendChild(to_append);
+}
 
-      function filterAuthors() {
-      	console.log("filter Authors function called");
-        let input = document.getElementById("author_drop_search");
-        let filter = input.value.toUpperCase();
-        let div = document.getElementById("author_down");
-        let auth = div.getElementsByTagName("auth");
-        let i = 0;
-        for (i = 0; i < auth.length; i++) {
-          textVal = auth[i].textContent || auth[i].innerText;
-          if (textVal.toUpperCase().indexOf(filter) > -1) {
-            auth[i].style.display="";
-          } else {
-            auth[i].style.display = "none";
-          }
-        }
+function showAuthors() {
+  document.getElementById("author_down").classList.toggle("show");
+}
 
-       }
-    </script>
-    <script>
-      $("#add-author").click(function() {
-      	console.log("add authors clicked");
-        $("#author-drop").append('<input type="text" placeholder="J.K. Rowling" class="filter-input form-control" id="author_drop_search" onkeyup="filterAuthors()">');
-      })
-    </script>
+function filterAuthors() {
+  console.log("filter Authors function called");
+  let input = document.getElementById("author_drop_search");
+  let filter = input.value.toUpperCase();
+  let div = document.getElementById("author_down");
+  let auth = div.getElementsByTagName("auth");
+  let i = 0;
+  for (i = 0; i < auth.length; i++) {
+    textVal = auth[i].textContent || auth[i].innerText;
+    if (textVal.toUpperCase().indexOf(filter) > -1) {
+      auth[i].style.display="";
+    } else {
+      auth[i].style.display = "none";
+    }
+  }
+
+ }
+</script>
+<script>
+$("#add-author").click(function() {
+  console.log("add authors clicked");
+  $("#author-drop").append('<input type="text" placeholder="J.K. Rowling" class="filter-input form-control" id="author_drop_search" onkeyup="filterAuthors()">');
+})
+</script>
 
 
 {% extends 'layout.html' %}
 
 {% block body %}
-  <div class="custom-add-book-box jumbotron text-center mt-4">
-    <h2 class="name">Add New Book: </h2>
-    <div class="master-filter-container container mt-4"><!-- begin search filters-->
-      <div class="filter-container">
-          <div class="first-filter-set"><!-- title, author, ISBN, year filters -->
-            <div class="filter-input-container">
-              <label for="filter-text" class="filter-input-label">Title: </label>
-              <input type="text" name="filter-text" id="filter-text" class="filter-input form-control" placeholder="Harry Potter">
-            </div>
+<div class="custom-add-book-box jumbotron text-center mt-4 mb-5">
+  <h2 class="name">Add New Book: </h2>
+  <form id="new_book" class="col-lg-6 mx-auto" action="/add_book" method="post">
 
-            <!--<div class="filter-input-container">
-              <label for="filter-author" class="filter-input-label">Author: </label>
-              <input type="text" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="J.K. Rowling">
-            </div>
-        -->
-            <div class="filter-input-container">
-            	<!---
-              <label for="filter-author" class="filter-input-label">(Optional) Second Author: </label>
-              <input type="text" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="J.K. Rowling">-->
-              <div id="author_section">
-              <div id="author_drop" class="dropdown">
-              	<!--<button onclick="showAuthors()" class="btn">Select Author</button>-->
-              	<label for="author_name" class="filter-input-label">Add Author(s):</label>
-              	
-              	<div id="author_down" class="dropdown-content" height="10px">
-              		<!--figure out a way to dynamically put author names in dropdown list based on input-->
-              		<!--<button id="auth" class="dropdown-item" type="button"> Author Name 1</button>
-              		<button id="auth" class="dropdown-item" type="button"> Author Name 2</button>-->
-              	</div>
-            	</div>
-            	<button id="add-author" class="btn btn-secondary btn-sm" onclick="addAuthor()">
-            	&plus; Add Existing Author
-            	</button>
-            	<button id="new-author" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#new-auth-modal">&plus; Add New Author</button>
-            </div>
-            <div class="modal" tabindex="-1" role="dialog" area-labelledby="Add New Author" area-hidden="true" id="new-auth-modal">
-            	<div class="modal-dialog" role="document">
-            	<div class="modal-content">
-            		<div class="modal-header">
-            			<h5 class="modal-title">Add New Author</h5>
-            			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            				<span aria-hidden="true">&times;</span>
-            			</button>
-            		</div>
-            		<div class="modal-body">
-            			<div class="filter-input-container">
-          					<label for="filter-author" class="filter-input-label">Author Name: </label>
-          					<input type="text" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="Toni Morrison">
-        				</div>
-        				<div class="filter-input-container">
-          					<label for="filter-author" class="filter-input-label">Author Bio: </label>
-          					<input type="textarea" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="Write a blurb here">
-        				</div>
-            		</div>
-            		<div class="modal-footer">
-            			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            			<button type="button" class="btn btn-primary" onclick="addNewAuthor()" data-dismiss="modal">Save Changes</button>
-            		</div>
-            	</div>
-                </div>
-            </div>
-            </div>
-            <div class="filter-input-container">
-              <label for="filter-ISBN" class="filter-input-label">ISBN-10: </label>
-              <input type="number" name="filter-ISBN" id="filter-ISBN" class="filter-input form-control" placeholder="98735513209">
-            </div>
+    <div class="form-group">
+        <label for="book_title">Title - required</label>
+        <input type="text" name="book_title" class="form-control input-lg" placeholder="The Handmaid's Tale">
+    </div>
 
-            <div class="filter-input-container">
-              <label for="filter-year" class="filter-input-label">Year Published: </label>
-              <input type="number" name="filter-year" id="filter-year" class="filter-input form-control" placeholder="1988">
-            </div>
-
-	         <!-- genre filters -->
-	        <div class="filter-input-container">
-	            <fieldset id="filter-genre" class="filter-fieldset">
-	              <label for="genre_box" class="filter-input-label ">Genre(s):</label>
-	              <div class="row">
-	                <div class="col">
-	                  <div class="form-group" name="genre_box">
-	          			<select multiple class="form-control" id="filter-genre">
-	          				{% for genre in genres %}
-	            			<option>{{genre.name}}</option>
-	          				{% endfor %}
-	         				 </select>
-	        		  </div>
-	                </div><!--end column-->
-	              </div><!--end row-->
-	            </fieldset>
-	          </div>
-	          <!-- end genre filters -->
-
-          </div><!-- end filter set: title, author, ISBN, year -->
-
-
-          <button id="filter-update-button" class="action-button btn btn-primary">Add Book to Paperstacks</button>
-
+    <div id="author_section">
+      <div class="form-group">
+        <label for="book_author">Select Author(s) - can be added later</label>
+        <select multiple class="form-control" id="book_author" name="book_author">
+        {% for author in authors %}
+          <option value="{{ author['author_id'] }}">{{ author['author_name'] }}</option>
+        {% endfor %}
+        </select>
       </div>
-    </div><!-- end search filters -->
-  </div><!-- end search block -->
+
+        <!--<div id="author_drop" class="dropdown">
+        <div id="author_down" class="dropdown-content" height="10px">
+          </div>
+        </div>
+        <button id="add-author" class="btn btn-secondary btn-sm" onclick="addAuthor()">
+        &plus; Add Existing Author
+        </button>-->
+        <!--<button id="new-author" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#new-auth-modal">&plus; Add New Author</button>-->
+
+      <!-- Had to make the Add New Author button into regular link because otherwise it was calling the POST method when you add a new Author, which called the server to try to add a book. This broke everything. Not sure if another way around it -->
+      <a href="#" id="new-author" data-toggle="modal" data-target="#new-auth-modal">&plus; Add New Author</a>
+    </div>
+
+      <div class="modal" tabindex="-1" role="dialog" area-labelledby="Add New Author" area-hidden="true" id="new-auth-modal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add New Author</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="filter-input-container">
+                <label for="filter-author" class="filter-input-label">Author Name: </label>
+                <input type="text" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="Toni Morrison">
+            </div>
+            <div class="filter-input-container">
+                <label for="filter-author" class="filter-input-label">Author Bio: </label>
+                <input type="textarea" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="Write a blurb here">
+            </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" onclick="addNewAuthor()" data-dismiss="modal">Save Changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group mt-3">
+        <label for="book_isbn">ISBN-10 - required</label>
+        <input type="number" name="book_isbn" class="form-control" placeholder="98735513209">
+      </div>
+
+      <div class="form-group">
+        <label for="book_year">Year Published - required</label>
+        <input type="number" name="book_year" class="form-control" placeholder="2007">
+      </div>
+
+      <div class="form-group">
+        <label for="book_genre">Genre(s) - pick at least one</label>
+        <select multiple class="form-control" name="book_genre" id="book_genre">
+        {% for genre in genres %}
+          <option value="{{ genre['genre_id'] }}">{{ genre['genre_name'] }}</option>
+        {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="book_description">Book Description:</label>
+        <input type="textarea" name="book_description" class="form-control input-lg" placeholder="Summary or blurb here">
+      </div>
+
+    <button type="submit" id="add-book-button" class="action-button btn btn-primary">Add Book to Paperstacks</button>
+  </form>
+
 {% endblock %}

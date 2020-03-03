@@ -1,3 +1,5 @@
+<!--This page receives 'genres' [genre_id, genre_name] -->
+<!-- And 'featuredbooks' ['isbn', 'book_title', 'year_published', 'book_description', 'author_name', 'genre_name'] -->
 {% extends 'layout.html' %}
 
 {% block body %}
@@ -7,7 +9,7 @@
         <ul class="list-group genre-group">
           {% for genre in genres %}
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              <a href="genre/{{genre.id}}">{{genre.name}}</a>
+              <a href="genre/{{ genre['genre_id'] }}">{{ genre['genre_name'] }}</a>
                 <!-- <span class="badge badge-primary badge-pill"></span> -->
             </li>
           {% endfor %}
@@ -21,13 +23,19 @@
           <div class="col">
             <img src="../static/electric-arches.jpg">
           </div>
+
+          {% for book in featuredbooks %}
+
           <div class="col">
-            <div class="custom-featured-book-title mt-4">{{books[6].title}}</div>
-            <div class="custom-featured-book-author">by {{books[6].author}}</div>
-            <div class="custom-featured-book-year"><b>Published:</b> {{books[6].year_published}}</div>
-            <div class="custom-featured-book-genre"><b>Genre:</b> {{books[6].genre}}</div>
-            <div class="custom-featured-book-blurb lead">{{books[6].blurb}}</div>
+            <div class="custom-featured-book-title mt-4"> {{ book['book_title'] }}</div>
+            <div class="custom-featured-book-author">by {{ book['author_name']}}</div>
+            <div class="custom-featured-book-year"><b>Published:</b> {{ book['year_published'] }}</div>
+            <div class="custom-featured-book-genre"><b>Genre:</b> {{ book['genre_name'] }}</div>
           </div>
+          <div class="col">
+            <div class="custom-featured-book-blurb lead"> {{ book['book_description'] }} </div>
+          </div>
+          {% endfor %}
         </div>
         <div class="row custom-feature  mt-3">
           <h4 class="name">Search for Books...</h4>

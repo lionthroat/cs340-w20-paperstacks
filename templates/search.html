@@ -1,3 +1,5 @@
+<!-- Receives dictionary 'genres' with keys [genre_id, genre_name] -->
+
 {% extends 'layout.html' %}
 
 {% block body %}
@@ -46,7 +48,7 @@
           <label for="filter-genre">Genre</label>
           <select multiple class="form-control" id="filter-genre">
           {% for genre in genres %}
-            <option>{{genre.name}}</option>
+            <option>{{ genre['genre_name'] }}</option>
           {% endfor %}
           </select>
         </div>

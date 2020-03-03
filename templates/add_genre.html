@@ -1,12 +1,18 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-  <div class="custom-add-book-box jumbotron text-center mt-4 mb-4">
-    <h2 class="name">Add New Genre: </h2>
-        <div class="filter-input-container">
-          <label for="filter-text" class="filter-input-label">Name:  </label>
-          <input type="text" name="filter-text" id="filter-text" class="filter-input" placeholder="Vegan Historical Romance">
-        </div>
-        <button id="filter-update-button" class="action-button">Add Genre to Paperstacks</button>
+  <div class="jumbotron text-center mt-4 mb-4">
+    <div class="genre-box container">
+
+      <h2 class="name">Add New Genre</h2>
+      <form id="add-genre-form" action="/add_genre" method="post">
+          <div class="form-group">
+            <label for="new-genre-name">Genre Name:</label>
+            <input type="text" name="genre_name" class="form-control input-lg" id="add-genre-field" placeholder="YA Novels">
+          </div>
+          <button type="submit" id="add-genre-button" class="action-button btn btn-primary mt-4 px-4">Add Genre to Paperstacks</button>
+      </form>
+
+    </div>
   </div>
 {% endblock %}

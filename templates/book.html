@@ -1,37 +1,78 @@
+<!-- This page receives a dictionary 'bookresult' with keys: -->
+<!-- [isbn, book_title, year_published, book_description, author_name, genre_name] -->
+<!-- This page receives a dictionary 'reviews' with keys: -->
+<!-- isbn, rating_id, review_id, star_rating, rating_date, review_content -->
+
+<!-- Need additional logic to display multiple authors -->
+<!-- May need additional logic or different SQL to display reviews without ratings and vice versa -->
 {% extends 'layout.html' %}
 
 {% block body %}
   <div class="jumbotron text-center mt-4">
-    <div class="row">
-      <div class="col">
-        <div class="book-cover">
-          <img src= {{ url_for('static', filename = '../static/crayons-quit.jpg') }} width="400" height="400" alt="previous" title="Previous" border="0">
-        </div>
+    <!-- <div class="col">
+      <div class="book-cover">
+        <img src= {{ url_for('static', filename = '../static/crayons-quit.jpg') }} width="400" height="400" alt="previous" title="Previous" border="0">
       </div>
-      <div class="col">
-        <h3 class="subheader"> {{book.title}} </h3>
-        <p>by {{book.author}}</p>
-        <p><b>Genre:</b> {{book.genre}}<br>
-        <b>Year Published:</b> {{book.year_published}}<br>
-          <b>ISBN:</b> {{book.isbn}}
-        </p>
-        <p> {{book.blurb}}</p>
-        <div>
-          <button id="edit-book-button" class="btn btn-primary mx-2">Edit Book</button>
-          <button id="rem-book-button" class="btn btn-primary mx-2">Remove Book</button>
-        </div>
-      </div>
-  <div class="jumbotron text-center mt-4">
-    <div class="ratings-reviews">
-      <h3 class="header3"> Ratings</h3>
-      <p class="rating-content"> Average rating: [avg] out of [#] of reviews &star; &star; &star; &star; &star;
-      </p>
-
-      <h3 class="header3">Reviews</h3>
-      <p class="review-content">
-        [for each review, add field here]
+    </div> -->
+    {% for book in bookresult %}
+    <div class="row mt-4">
+      <h3>{{ book['book_title'] }}</h3>
+    </div>
+    <div class="row mt-4">
+      <h5">by {{ book['author_name'] }}</h5>
+    </div>
+    <div class="row mt-4">
+      <p><b>Genre:</b> {{ book['genre_name'] }}<br>
+      <b>Year Published:</b> {{book['year_published'] }}<br>
+        <b>ISBN:</b> {{ book['isbn'] }}
       </p>
     </div>
-  </div>
+      <p> {{ book['book_description'] }}</p>
+    {% endfor %}
+
+    <div>
+      <button id="edit-book-button" class="btn btn-primary mx-2">Edit Book</button>
+      <button id="rem-book-button" class="btn btn-primary mx-2">Remove Book</button>
+    </div>
+
+      <!-- Average Rating not implemented yet -->
+      <!-- <h3 class="header3"> Ratings</h3>
+      <p class="rating-content"> Average rating: [avg] out of [#] of reviews &star; &star; &star; &star; &star;
+      </p> -->
+    <div class="row mt-4">
+      <h3 class="header3 text-left mb-4">Reviews & Ratings</h3>
+    </div>
+      {% for review in reviews %}
+        <h5 class="subheader text-left">Rating:
+          {% if review['star_rating'] == 5 %}
+            &#9733;&#9733;&#9733;&#9733;&#9733;
+          {% endif %}
+          {% if review['star_rating'] == 4 %}
+            &#9733;&#9733;&#9733;&#9733;&#9734;
+          {% endif %}
+          {% if review['star_rating'] == 3 %}
+            &#9733;&#9733;&#9733;&#9734;&#9734;
+          {% endif %}
+          {% if review['star_rating'] == 2 %}
+            &#9733;&#9733;&#9734;&#9734;&#9734;
+          {% endif %}
+          {% if review['star_rating'] == 1 %}
+            &#9733;&#9734;&#9734;&#9734;&#9734;
+          {% endif %}
+        </h5>
+
+        <p class="text-left">left on {{ review['rating_date'] }}</p>
+        <p class="text-left"><b>Review:</b><br>
+          {{ review['review_content'] }}
+        </p>
+        <div>
+          <button id="edit-rating-button" class="btn btn-secondary mx-2">Edit Rating</button>
+          <button id="rem-rating-button" class="btn btn-secondary mx-2">Remove Rating</button>
+          <button id="edit-review-button" class="btn btn-secondary mx-2">Edit Review</button>
+          <button id="rem-review-button" class="btn btn-secondary mx-2">Remove Review</button>
+        </div>
+        <hr />
+      {% endfor %}
+    </div>
 
 {% endblock %}

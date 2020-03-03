@@ -1,0 +1,20 @@
+<!--This page is sent a dictionary 'authors' by the server with these keys: -->
+<!-- [author_id, author_name] -->
+<!-- This will likely need additional logic to display multiple authors -->
+{% extends 'layout.html' %}
+
+{% block body %}
+
+  <div class="container mt-5 mb-5">
+    <h4 class="name">Authors</h4>
+
+    <ul class="list-group">
+      {% for author in authors %}
+        <li class="list-group-item">
+          <a href="author/{{ author['author_id'] }}">{{ author['author_name'] }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+{% endblock %}

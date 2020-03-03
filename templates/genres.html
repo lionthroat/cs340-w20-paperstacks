@@ -1,3 +1,6 @@
+<!-- Receives dictionary 'genres' with keys [genre_id, genre_name] -->
+<!-- Receives dictionary 'books' with keys [isbn, book_title, genre_id] -->
+
 {% extends 'layout.html' %}
 
 {% block body %}
@@ -8,12 +11,12 @@
     <ul class="list-group">
       {% for genre in genres %}
         <li class="list-group-item">
-          <h5><a href="genre/{{genre.id}}">{{genre.name}}</a></h5>
-          {% set gid = genre.id %}
+          <h5><a href="genre/{{ genre['genre_id'] }}"> {{ genre['genre_name'] }} </a></h5>
+          {% set gid = genre['genre_id'] %}
           {% for book in books %}
-            {% if gid == book.genre_id %}
+            {% if gid == book['genre_id'] %}
               <ul>
-                <li><a href="book/{{book.id}}">{{book.title}}</a></li>
+                <li><a href="book/{{ book['isbn'] }}">{{ book['book_title'] }}</a></li>
               </ul>
             {% endif %}
           {% endfor %}

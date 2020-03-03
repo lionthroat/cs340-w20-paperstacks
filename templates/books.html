@@ -1,3 +1,6 @@
+<!--This page currently receives array 'books' with information in the following indices: -->
+<!-- [isbn, book_title, author_name] -->
+<!-- This will likely need additional logic to display multiple authors -->
 {% extends 'layout.html' %}
 
 {% block body %}
@@ -8,10 +11,9 @@
     <ul class="list-group">
       {% for book in books %}
         <li class="list-group-item">
-          <a href="book/{{book.id}}"><img src="../static/book-img.png" alt={{book.title}} height="42" width="42"></a>
-          <a href="book/{{book.id}}">{{book.title}}</a>
-          by {{book.author}}.
-          <p>Genre: {{book.genre}}.</p>
+          <a href="book/{{ book['isbn'] }}"><img src="../static/book-img.png" alt={{ book['book_title'] }} height="42" width="42"></a>
+          <a href="book/{{ book['isbn'] }}">{{ book['book_title'] }}</a>
+          by {{ book['author_name'] }}
         </li>
       {% endfor %}
     </ul>

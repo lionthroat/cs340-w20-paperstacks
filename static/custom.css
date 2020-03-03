@@ -15,8 +15,7 @@
 	color: black;
 }
 
-.custom_title:hover {
-}
+textarea { height: 200px; }
 
 .nav-item {
 	font-weight: bold;
@@ -26,16 +25,8 @@
 	background-color: white;
 }
 
-.nav-item:hover {
-}
-
-.navbar-toggler {
-	margin-right: 20px;
-}
-
-.custom-search-bar {
-	margin-right: 20px;
-}
+.navbar-toggler { margin-right: 20px; }
+.custom-search-bar { margin-right: 20px; }
 
 .custom-feature {
 	padding: 10px;
@@ -58,30 +49,14 @@
 	color: black;
 }
 
-.custom-featured-book-year {
-
-}
-
-.custom-featured-book-genre {
-
-}
-
-.custom-featured-book-blurb {
-
-}
-
-.page-footer {
-	max-height: 55px;
-}
+.page-footer { max-height: 55px; }
 
 .genre-group {
 	font-size: 11px;
 	padding: 0;
 }
 
-.jumbotron {
-	background-color: #fff;
-}
+.jumbotron { background-color: #fff; }
 
 /* misc styles */
 .content {
@@ -94,9 +69,7 @@
 	padding-left: 30px;
 }
 
-.left-half {
-	float:left;
-}
+.left-half { float:left; }
 
 .right-half {
 	float:right;
@@ -112,17 +85,9 @@
 	float:left;
 }
 
-.ratings-reviews {
-	padding-left:50px;
-}
-
-.header3 {
-	text-align: center;
-}
-
-.rating-content {
-	text-align: center;
-}
+.ratings-reviews { padding-left:50px; }
+.header3 { text-align: center; }
+.rating-content { text-align: center; }
 
 .name {
 	font-family: 'Courier Prime', monospace;
@@ -131,17 +96,9 @@
 }
 
 /* Search Filter Styling */
-.master-filter-container {
-	max-width: 500px;
-}
-
-.first-filter-set {
-	text-align: left;
-}
-
-.filter-input-container {
-	padding: 5px;
-}
+.master-filter-container { max-width: 500px; }
+.first-filter-set { text-align: left; }
+.filter-input-container { padding: 5px; }
 
 .genre-container {
 	text-align: left;
@@ -153,19 +110,13 @@
 	background-color: #cfe8e4;
 }
 
+.genre-box {
+	padding: 20px;
+	width: 450px;
+}
+
 /*Add Book Styles*/
-.dropdown-content {
-	display:none;
-}
-
-.dropdown-content auth {
-	display:none;
-}
-
-.dropdown-content auth:hover {
-	background-color:#f1f1f1;
-}
-
-.show {
-	display:block;
-}
+.dropdown-content { display:none; }
+.dropdown-content auth { display:none; }
+.dropdown-content auth:hover { background-color:#f1f1f1; }
+.show { display:block; }
