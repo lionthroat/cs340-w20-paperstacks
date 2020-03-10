@@ -13,16 +13,53 @@
 				</div>
 			</div>
 			<div class="row mt-4 pt-1 pb-4 mb-4">
-      	<button id="edit-author-button" class="btn btn-primary mx-2">Edit Author</button>
-      	<button id="rem-author-button" class="btn btn-primary mx-2">Remove Author</button>
+
+        <a href="#editAuthorModal" role="button" class="btn btn-primary mx-2" data-toggle="modal">Edit Author</a>
+
+				<form id="rem-author-button" action="/rem_author/{{ author['author_id'] }}" method="post">
+					<button type="submit" id="rem-author-button" class="btn btn-primary mx-2">Remove Author</button>
+				</form>
+
+				<!-- Edit Author Modal -->
+				<div class="modal hide fade" tabindex="-1" role="dialog" area-labelledby="Edit Author" area-hidden="true" id="editAuthorModal">
+		        <div class="modal-dialog" role="document">
+		          <div class="modal-content">
+
+		            <div class="modal-header">
+		              <h5 class="modal-title">Edit Author</h5>
+		              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                <span aria-hidden="true">&times;</span>
+		              </button>
+		            </div>
+
+		            <div class="modal-body">
+
+		                <form id="editAuthorForm" method="post" action="/edit_author/{{ author['author_id'] }}/">
+
+		                  <label for="update_author_name">Author Name:</label>
+		                  <input type="text" name="update_author_name" id="update_author_name" class="form-control input-lg" value="{{ author[0]['author_name'] }}">
+
+											<label for="update_author_bio">Author Bio:</label>
+        							<textarea name="update_author_bio" id="update_author_bio" rows="8" class="form-control input-lg">{{ author[0]['author_description'] }}</textarea>
+
+		                  <button id="edit-author-submit" class="btn btn-primary" type="submit">Submit</button>
+		                </form>
+
+		            </div>
+
+		          <div class="modal-footer">
+		            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		          </div><!-- End of Modal Footer -->
+		      </div><!-- End of Edit Author Modal -->
 			</div>
-			<div class="row">
+
+			<div class="row"><!-- Books Row -->
 				<h4 class="name ml-4">Books by {{ author[0]['author_name'] }}</h4>
 			</div>
 			<div class="row">
 				<ul>
         {% for book in author %}
-          <li><a href="book/{{ book['isbn'] }}">{{ book['book_title'] }}</a></li>
+          <li><a href="/book/{{ book['isbn'] }}">{{ book['book_title'] }}</a></li>
         {% endfor %}
 				</ul>
 			</div>

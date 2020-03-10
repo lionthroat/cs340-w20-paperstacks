@@ -1,54 +1,55 @@
 {% block body %}
     <div class="container mt-4 mb-5"><!-- begin search filters-->
-      <form>
+      <form id="advanced_search" action="/search" method="post">
 
         <div class="form-group">
-          <label for="filter-text">Title or Keyword</label>
-          <input type="text" class="form-control" id="filter-text" placeholder="The Help">
+          <label for="search_title">Title</label>
+          <input type="text" name="search_title" class="form-control" placeholder="The Help">
         </div>
 
         <div class="form-group">
-          <label for="filter-text">Author</label>
-          <input type="text" class="form-control" id="filter-author" placeholder="The Help">
+          <label for="search_author">Author</label>
+          <input type="text" name="search_author" class="form-control" placeholder="Elizabeth Gilbert">
         </div>
 
         <div class="form-group">
-          <label for="filter-text">ISBN-10</label>
-          <input type="text" class="form-control" id="filter-isbn" placeholder="98735513209">
+          <label for="search_isbn">ISBN-10</label>
+          <input type="text" name="search_isbn" class="form-control" placeholder="98735513209">
         </div>
 
         <div class="form-group">
-          <label for="filter-year">Year Published</label>
-          <input type="text" class="form-control" id="filter-year" placeholder="2003">
+          <label for="search_year">Year Published</label>
+          <input type="text" name="search_year" class="form-control" placeholder="2007">
         </div>
 
         <div class="form-group">
-          <label for="filter-rating">Average Rating</label>
-          <select class="form-control" id="filter-rating">
+          <label for="search_rating">Average Rating</label>
+          <select class="form-control" name="search_rating">
             <option value="null"></option>
             <option value="five-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
             <option value="four-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</option>
             <option value="three-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</option>
             <option value="two-stars">&#9733;&#9733;&#9734;&#9734;&#9734;</option>
-            <option value="one-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</option>
+            <option value="one-stars">&#9733;&#9734;&#9734;&#9734;&#9734; :(</option>
           </select>
         </div>
 
         <div class="filter-input-container mt-3">
-          <label for="filter-has-reviews" class="filter-input-label">Has Reviews? </label>
-          <input type="checkbox" name="filter-reviews" id="filter-reviews" value="has-reviews">
+          <label for="search_has_reviews">Has Reviews? </label>
+          <input type="checkbox" name="search_has_reviews" value="has_reviews">
         </div>
 
         <div class="form-group">
-          <label for="filter-genre">Genre</label>
-          <select multiple class="form-control" id="filter-genre">
-          {% for genre in genres %}
-            <option>{{genre.name}}</option>
-          {% endfor %}
+          <label for="search_genre">Genre</label>
+          <select class="form-control" name="search_genre">
+            <option value=''></option>
+            {% for genre in genres_list %}
+              <option value="{{ genre['genre_id'] }}">{{ genre['genre_name'] }}</option>
+            {% endfor %}
           </select>
         </div>
 
-        <button id="filter-update-button" class="action-button btn btn-primary mt-3 px-4 mb-5">Search</button>
+        <button type="submit" id="advanced-search-button" class="action-button btn btn-primary mt-3 px-4 mb-5" name="search_submit" value="advanced_search">Search</button>
 
       </form>
     </div>

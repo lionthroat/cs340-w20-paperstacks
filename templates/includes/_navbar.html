@@ -54,9 +54,15 @@
         <a class="nav-link" href="/about">About</a>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0 custom-search-bar">
-      <input class="form-control mr-sm-1" type="search" placeholder="Find a book..." aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    <form id="tiny-search" action="/search" method="post" class="form-inline my-2 my-lg-0 custom-search-bar">
+
+      <input class="form-control mr-sm-1" name="tiny" type="text" placeholder="book / author / genre" aria-label="Search">
+
+    <!-- <form id="tiny-search" action="/tiny_search" class="form-inline my-2 my-lg-0 custom-search-bar"> -->
+      <!-- <input class="form-control mr-sm-1" name="tiny" type="search" placeholder="Find a book..." aria-label="Search"> -->
+
+      <button type="submit" name="search_submit" value="navbar_search" class="btn btn-outline-success my-2 my-sm-0">Search</button>
+
     </form>
   </div>
 </nav>

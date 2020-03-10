@@ -101,6 +101,10 @@ $("#add-author").click(function() {
                 <label for="filter-author" class="filter-input-label">Author Bio: </label>
                 <input type="textarea" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="Write a blurb here">
             </div>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="uploadAuthorImg">
+              <label class="custom-file-label" for="uploadAuthorImg">Upload Author Image</label>
+            </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -133,7 +137,10 @@ $("#add-author").click(function() {
         <label for="book_description">Book Description:</label>
         <input type="textarea" name="book_description" class="form-control input-lg" placeholder="Summary or blurb here">
       </div>
-
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="uploadBookImg">
+        <label class="custom-file-label" for="uploadBookImg">Upload Book Image</label>
+      </div>
     <button type="submit" id="add-book-button" class="action-button btn btn-primary">Add Book to Paperstacks</button>
   </form>
 

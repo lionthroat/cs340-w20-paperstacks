@@ -1,14 +1,54 @@
-<!-- This page receives a dictionary 'bookresult' with keys: -->
-<!-- [isbn, book_title, year_published, book_description, author_name, genre_name] -->
-<!-- This page receives a dictionary 'reviews' with keys: -->
-<!-- isbn, rating_id, review_id, star_rating, rating_date, review_content -->
+<!-- Gets dictionary 'bookresult' with keys: [isbn, book_title, year_published, book_description, author_name, genre_name] -->
+<!-- Gets dictionary 'reviews' with keys: [isbn, rating_id, review_id, star_rating, rating_date, review_content] -->
+<!-- Gets dictionary 'ratings' with keys: [isbn, rating_id, review_id, star_rating, rating_date] -->
+
+<!-- MAY receive 'rating_rem' if user just removed a Rating -->
+<!-- MAY receive 'review_rem' if user just removed a Review -->
+<!-- MAY receive 'review_edit' if user just upated a Review -->
+<!-- MAY receive 'rating_edit' if user just upated a Rating -->
 
 <!-- Need additional logic to display multiple authors -->
 <!-- May need additional logic or different SQL to display reviews without ratings and vice versa -->
+
+<script language='javascript'>
+  </script>
 {% extends 'layout.html' %}
 
 {% block body %}
   <div class="jumbotron text-center mt-4">
+
+    {% if rating_edit is defined %}
+    <div class="row mt-2 mb-2">
+      <ul>
+        <li class="list-group-item bg-primary text-light"><h6>Success:</h6> The selected item was changed or removed.</li>
+      </ul>
+    </div>
+    {% endif %}
+
+    {% if rating_rem is defined %}
+    <div class="row mt-2 mb-2">
+      <ul>
+        <li class="list-group-item bg-primary text-light"><h6>Success:</h6> The selected item was changed or removed.</li>
+      </ul>
+    </div>
+    {% endif %}
+
+    {% if review_rem is defined %}
+    <div class="row mt-2 mb-2">
+      <ul>
+        <li class="list-group-item bg-primary text-light"><h6>Success:</h6> The selected item was changed or removed.</li>
+      </ul>
+    </div>
+    {% endif %}
+
+    {% if review_edit is defined %}
+    <div class="row mt-2 mb-2">
+      <ul>
+        <li class="list-group-item bg-primary text-light"><h6>Success:</h6> The selected item was changed or removed.</li>
+      </ul>
+    </div>
+    {% endif %}
+
     <!-- <div class="col">
       <div class="book-cover">
         <img src= {{ url_for('static', filename = '../static/crayons-quit.jpg') }} width="400" height="400" alt="previous" title="Previous" border="0">
@@ -28,19 +68,70 @@
       </p>
     </div>
       <p> {{ book['book_description'] }}</p>
-    {% endfor %}
 
-    <div>
-      <button id="edit-book-button" class="btn btn-primary mx-2">Edit Book</button>
+      <div>
+        <a href="#" id="edit-book-button" class="btn btn-primary mx-2" data-toggle="modal" data-target="#edit-book-modal" >Edit Book</a>
       <button id="rem-book-button" class="btn btn-primary mx-2">Remove Book</button>
-    </div>
+      </div>
+
+      <div class="modal hide fade" tabindex="-1" role="dialog" area-labelledby="Edit Book" area-hidden="true" id="edit-book-modal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Book</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <label for="update-title" class="filter-input-label">Update Title:</label>
+              <input type="text" name="update-title" id="update-title" class="filter-input form-control" value="{{ book['book_title'] }}">
+              <div id="author_section">
+                <div class="form-group">
+                  <label for="book_author">Update Author(s)</label>
+                  <select multiple class="form-control" id="book_author" name="book_author">
+                    {% for author in authors %}
+                    <!-- will do this kind of thing to pre-select current authors:
+                    https://python-forum.io/Thread-How-do-I-fetch-values-from-db-to-Select-Options-using-Flask-->
+                    <option value="{{ author['author_id'] }}">{{ author['author_name'] }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              <!-- Had to make the Add New Author button into regular link because otherwise it was calling the POST method when you add a new Author, which called the server to try to add a book. This broke everything. Not sure if another way around it -->
+              <a href="#" id="new-author" data-toggle="modal" data-target="#new-auth-modal">&plus; Add New Author</a>
+              </div>
+              <div class="form-group">
+                <label for="book_genre">Genre(s) - pick at least one</label>
+                <select multiple class="form-control" name="book_genre" id="book_genre">
+                {% for genre in genres %}
+                <option value="{{ genre['genre_id'] }}">{{ genre['genre_name'] }}</option>
+                {% endfor %}
+                </select>
+              </div>
+              <label for="update-isbn" class="filter-input-label">Update ISBN:</label>
+              <input type="text" name="update-isbn" id="update-isbn" class="filter-input form-control" value="{{ book['isbn'] }}">
+              <label for="update-year" class="filter-input-label">Update Year Published:</label>
+              <input type="text" name="update-year" id="update-year" class="filter-input form-control" value="{{ book['year_published'] }}">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" onclick="" data-dismiss="modal">Save Changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    {% endfor %}
 
       <!-- Average Rating not implemented yet -->
       <!-- <h3 class="header3"> Ratings</h3>
       <p class="rating-content"> Average rating: [avg] out of [#] of reviews &star; &star; &star; &star; &star;
       </p> -->
+
     <div class="row mt-4">
       <h3 class="header3 text-left mb-4">Reviews & Ratings</h3>
+
+
     </div>
       {% for review in reviews %}
         <h5 class="subheader text-left">Rating:
@@ -66,13 +157,161 @@
           {{ review['review_content'] }}
         </p>
         <div>
-          <button id="edit-rating-button" class="btn btn-secondary mx-2">Edit Rating</button>
-          <button id="rem-rating-button" class="btn btn-secondary mx-2">Remove Rating</button>
-          <button id="edit-review-button" class="btn btn-secondary mx-2">Edit Review</button>
-          <button id="rem-review-button" class="btn btn-secondary mx-2">Remove Review</button>
+
+          <!-- Edit Rating Modal and Form -->
+          <div class="modal" id="edit-rating-modal" tabindex="-1" role="dialog" area-labelledby="Edit Rating" area-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Rating</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+
+                </div>
+                <div class="modal-body">
+
+                  <form id="editRating" method="post" action="/edit_rating/{{ review['isbn'] }}/{{ review['rating_id'] }}/">
+
+                      <div class="form-group">
+                        <label for="update_rating">Edit Rating:</label>
+                        <select class="form-control" name="update_rating" value="review['star_rating']">
+                          <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
+                          <option value="4">&#9733;&#9733;&#9733;&#9733;&#9734;</option>
+                          <option value="3">&#9733;&#9733;&#9733;&#9734;&#9734;</option>
+                          <option value="2">&#9733;&#9733;&#9734;&#9734;&#9734;</option>
+                          <option value="1">&#9733;&#9734;&#9734;&#9734;&#9734; :(</option>
+                        </select>
+                      </div>
+                      <button id="edit-rating-submit" class="btn btn-primary" type="submit">Submit</button>
+                  </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                    <button class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div><!-- end of Edit Rating Modal and Form -->
+
+          <!-- Edit Review Modal and Form -->
+          <div class="modal" id="edit-review-modal" tabindex="-1" role="dialog" area-labelledby="Edit Review" area-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Review</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+
+                </div>
+                <div class="modal-body">
+
+                  <form id="editReview" method="post" action="/edit_review/{{ review['isbn'] }}/{{ review['review_id'] }}/">
+
+                    <label for="update_review_content">Review Content:</label>
+                    <input type="text" name="update_review_content" id="update_review_content" class="form-control input-lg" value="{{ review['review_content'] }}">
+
+                    <button id="edit-review-submit" class="btn btn-primary" type="submit">Submit</button>
+                  </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                    <button class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div><!-- End of Edit Review Modal and Form -->
+
+          <a href="#edit-rating-modal" role="button" class="btn btn-secondary mx-2" data-toggle="modal">Edit Rating</a>
+
+          <form id="rem-rating-button" action="/rem_rating/{{ review['isbn'] }}/{{ review['rating_id'] }}" method="post">
+            <button type="submit" id="rem-rating-button-1" class="btn btn-secondary mx-2">Remove Rating</button>
+          </form>
+
+          <a href="#edit-review-modal" role="button" class="btn btn-secondary mx-2" data-toggle="modal">Edit Review</a>
+
+          <form id="rem-review-button" action="/rem_review/{{ review['isbn'] }}/{{ review['review_id'] }}" method="post">
+            <button type="submit" id="rem-review-button" class="btn btn-secondary mx-2">Remove Review</button>
+          </form>
+        </div>
+
+        <hr />
+
+      {% endfor %}
+
+      <!-- Page gets dictionary 'ratings' with keys: [isbn, rating_id, review_id, star_rating, rating_date] -->
+      {% if ratings|length %}
+      {% for rating in ratings %}
+        <h5 class="subheader text-left">Rating:
+          {% if rating['star_rating'] == 5 %}
+            &#9733;&#9733;&#9733;&#9733;&#9733;
+          {% endif %}
+          {% if rating['star_rating'] == 4 %}
+            &#9733;&#9733;&#9733;&#9733;&#9734;
+          {% endif %}
+          {% if rating['star_rating'] == 3 %}
+            &#9733;&#9733;&#9733;&#9734;&#9734;
+          {% endif %}
+          {% if rating['star_rating'] == 2 %}
+            &#9733;&#9733;&#9734;&#9734;&#9734;
+          {% endif %}
+          {% if rating['star_rating'] == 1 %}
+            &#9733;&#9734;&#9734;&#9734;&#9734;
+          {% endif %}
+        </h5>
+
+        <p class="text-left">left on {{ rating['rating_date'] }}</p>
+        <div>
+
+          <!-- Edit Rating Modal (for ratings without reviews) -->
+          <div class="modal" id="edit-rating-modal-2" tabindex="-1" role="dialog" area-labelledby="Edit Rating" area-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Rating</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+
+                <form id="editRating2" method="post" action="/edit_rating/{{ rating['isbn'] }}/{{ rating['rating_id'] }}/">
+                  <div class="form-group">
+                    <label for="update_rating">Edit Rating:</label>
+                    <select class="form-control" name="update_rating" value="rating['star_rating']">
+                      <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
+                      <option value="4">&#9733;&#9733;&#9733;&#9733;&#9734;</option>
+                      <option value="3">&#9733;&#9733;&#9733;&#9734;&#9734;</option>
+                      <option value="2">&#9733;&#9733;&#9734;&#9734;&#9734;</option>
+                      <option value="1">&#9733;&#9734;&#9734;&#9734;&#9734; :(</option>
+                    </select>
+                  </div>
+                  <button id="edit-rating-submit" class="btn btn-primary" type="submit">Submit</button>
+                </form>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" onclick="" data-dismiss="modal">Save Changes</button>
+                </div>
+              </div>
+            </div>
+          </div><!-- end of edit rating modal (for ratings without reviews) -->
+
+          <a href="#edit-rating-modal-2" role="button" class="btn btn-secondary mx-2" data-toggle="modal">Edit Rating</a>
+
+          <form id="rem-rating-button-2" action="/rem_rating/{{ rating['isbn'] }}/{{ rating['rating_id'] }}" method="post">
+            <button type="submit" id="rem-rating-button-2" class="btn btn-secondary mx-2">Remove Rating</button>
+          </form>
+
         </div>
         <hr />
       {% endfor %}
+      {% endif %}
     </div>
+
 
 {% endblock %}

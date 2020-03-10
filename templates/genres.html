@@ -1,11 +1,24 @@
 <!-- Receives dictionary 'genres' with keys [genre_id, genre_name] -->
 <!-- Receives dictionary 'books' with keys [isbn, book_title, genre_id] -->
 
+<!-- MAY receive string 'rem_success' if user deleted a Genre from the database -->
+
 {% extends 'layout.html' %}
 
 {% block body %}
 
   <div class="container mt-5 mb-5">
+
+    <div class="row">
+      {% if rem_success is defined %}
+        <ul>
+          <li class="list-group-item bg-primary text-light">
+            <h6>Success:</h6> The Genre <i>'{{ rem_success }}'</i> was removed from Paperstacks.
+          </li>
+        </ul>
+      {% endif %}
+    </div>
+
     <h4 class="name">All Genres</h4>
 
     <ul class="list-group">

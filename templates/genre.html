@@ -1,24 +1,79 @@
-<!-- Receives dictionary 'genreinfo' with keys [genre_id, genre_name, isbn, book_title] -->
+<!-- Receives dictionary 'genreinfo' with keys [genre_id, genre_name] -->
+<!-- Receives dictionary 'books' with keys [isbn, book_title] -->
+<!-- MAY receive 'error' if user tried to remove Genre that still had Books in it -->
+<!-- MAY receive 'new_name' if user just updated Genre -->
 
 {% extends 'layout.html' %}
 
 {% block body %}
+  {% for genre in genreinfo %}
+    <div class="container mt-5 mb-5">
 
-  <div class="container mt-5 mb-5">
-    <h4 class="name">Genre: {{ genreinfo[0]['genre_name'] }}
-    <div class="mt-3">
-      <ul>
-      {% for item in genreinfo %}
-      <li class="list-group-item small"><a href="book/{{ item['isbn'] }}">{{ item['book_title'] }}</a></li>
-      {% endfor %}
-      </ul>
-    </div>
-    <div>
-      <button id="edit-genre-button" class="btn btn-primary mx-2 mt-2">Edit Genre</button>
-      <form id="rem-genre" action="/rem_genre/{{ genreinfo[0]['genre_id'] }}" method="post">
-        <button type="submit" id="rem-genre-button" class="btn btn-primary mx-2 mt-2">Remove Genre</button>
-      </form>
-    </div>
-  </div>
+      {% if error is defined %}
+      <div class="row">
+        <ul>
+          <li class="list-group-item bg-danger text-light"><h6>Error:</h6> This Genre cannot be removed while there are still Books associated with it. Please remove or reassign each Book, then try again.</li>
+        </ul>
+      </div>
+      {% endif %}
 
+      {% if new_name is defined %}
+      <div class="row">
+        <ul>
+          <li class="list-group-item bg-info text-light"><h6>Success:</h6> The Genre's name has been updated to <i>'{{ new_name }}'</i></li>
+        </ul>
+      </div>
+      {% endif %}
+
+      <h4 class="name">Genre: {{ genre['genre_name'] }}
+      <div class="mt-3">
+        {% if books|length %}
+          <ul>
+            {% for book in books %}
+              <li class="list-group-item small"><a href="/book/{{ book['isbn'] }}">{{ book['book_title'] }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      <div>
+
+        <a href="#editGenreModal" role="button" class="btn btn-primary mx-2" data-toggle="modal">Edit Genre</a>
+
+        <form id="rem-genre" action="/rem_genre/{{ genre['genre_id'] }}" method="post">
+          <button type="submit" id="rem-genre-button" class="btn btn-primary mx-2 mt-2">Remove Genre</button>
+        </form>
+
+      </div>
+
+    </div>
+
+    <div class="modal hide fade" tabindex="-1" role="dialog" area-labelledby="Edit Genre" area-hidden="true" id="editGenreModal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h5 class="modal-title">Update Genre</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+
+                <form id="editGenre" method="post" action="/edit_genre/{{ genre['genre_id'] }}/">
+
+                  <label for="update_genre_name">Genre Name:</label>
+                  <input type="text" name="update_genre_name" id="update_genre_name" class="form-control input-lg" value="{{ genre['genre_name'] }}">
+
+                  <button id="edit-genre-submit" class="btn btn-primary" type="submit">Submit</button>
+                </form>
+
+            </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div><!-- End of Modal Footer -->
+      </div><!-- End of Edit Modal -->
+  {% endfor%}
 {% endblock %}

@@ -57,7 +57,7 @@ create table Ratings (
   `isbn` int(11) not null,
   `star_rating` int(11) not null,
   `rating_date` date not null,
-  foreign key (`isbn`) references Books (`isbn`)
+  foreign key (`isbn`) references Books (`isbn`) on delete cascade
 ) engine=innodb default charset=latin1;
 
 drop table if exists Reviews;
@@ -67,12 +67,12 @@ create table Reviews (
   `isbn` int(11) not null,
   `review_content` text COLLATE utf8_unicode_ci not null,
   `review_date` date not null,
-  foreign key (`rating_id`) references Ratings (`rating_id`),
-  foreign key (`isbn`) references Books (`isbn`)
+  foreign key (`rating_id`) references Ratings (`rating_id`) on delete set null,
+  foreign key (`isbn`) references Books (`isbn`) on delete cascade
 ) engine=innodb default charset=latin1;
 
 alter table Ratings
-add foreign key (`review_id`) references Reviews (`review_id`);
+add foreign key (`review_id`) references Reviews (`review_id`) on delete set null;
 
 INSERT INTO `Genres` VALUES
   (1,'Art'),
