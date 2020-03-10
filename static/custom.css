@@ -17,6 +17,15 @@
 
 textarea { height: 200px; }
 
+/* Ensure that modal gains scrollbar if browser is small or modal content is long */
+.modal-dialog{
+overflow-y: initial !important
+}
+.modal-body{
+max-height: calc(100vh - 200px);
+overflow-y: auto;
+}
+
 .nav-item {
 	font-weight: bold;
 	margin-left: 4px;
