@@ -45,7 +45,7 @@ def book(isbn):
     # Step 1: Fetch Book's information
 	connection = mysql.connect()
 	cursor = connection.cursor(pymysql.cursors.DictCursor)
-	select_stmt = "select book.isbn, book.book_title, book.year_published, book.book_description, auth.author_name, genre.genre_name from Books book join Books_Authors ba on ba.isbn = book.isbn join Authors auth on auth.author_id = ba.author_id join Genres_Books gb on gb.isbn = book.isbn join Genres genre on genre.genre_id = gb.genre_id where book.isbn = " + isbn
+	select_stmt = "select book.isbn, book.book_title, book.year_published, book.book_description, auth.author_name, auth.author_id, genre.genre_name from Books book join Books_Authors ba on ba.isbn = book.isbn join Authors auth on auth.author_id = ba.author_id join Genres_Books gb on gb.isbn = book.isbn join Genres genre on genre.genre_id = gb.genre_id where book.isbn = " + isbn
 	cursor.execute(select_stmt)
 	BookSQL = cursor.fetchall()
 	cursor.close()
@@ -107,7 +107,6 @@ def add_book():
         cursor = connection.cursor(pymysql.cursors.DictCursor)
         query = 'INSERT INTO Books (isbn, book_title, year_published, book_description) VALUES (%s,%s,%s,%s)'
         values = (isbn, book_title, year_published, book_description)
-        print("Values to be inserted to Book are: ", values)
         cursor.execute(query, values)
         connection.commit() # NOTE: entry will not be inserted w/o this
         cursor.close()
@@ -119,7 +118,6 @@ def add_book():
             cursor = connection.cursor(pymysql.cursors.DictCursor)
             query = 'INSERT INTO Books_Authors (isbn, author_id) VALUES (%s,%s)'
             values = (isbn, author_id)
-            print("Values to be inserted to Books_Authors are: ", values)
             cursor.execute(query, values)
             connection.commit() # NOTE: entry will not be inserted w/o this
             cursor.close()
@@ -131,7 +129,6 @@ def add_book():
             cursor = connection.cursor(pymysql.cursors.DictCursor)
             query = 'INSERT INTO Genres_Books (isbn, genre_id) VALUES (%s,%s)'
             values = (isbn, genre_id)
-            print("Values to be inserted to Genres_Books are: ", values)
             cursor.execute(query, values)
             connection.commit() # NOTE: entry will not be inserted w/o this
             cursor.close()
@@ -195,7 +192,6 @@ def add_author():
         cursor = connection.cursor(pymysql.cursors.DictCursor)
         query = 'INSERT INTO Authors (author_id, author_name, author_description) VALUES (%s,%s,%s)'
         values = (author_id, author_name, author_description)
-        print("Values to be inserted are: ", values)
         cursor.execute(query, values)
         connection.commit() # NOTE: entry will not be inserted w/o this
         cursor.close()
@@ -206,13 +202,104 @@ def add_author():
         cursor = connection.cursor(pymysql.cursors.DictCursor)
         query = 'INSERT INTO Books_Authors (isbn, author_id) VALUES (%s,%s)'
         values = (isbn, author_id)
-        print("Values to be inserted are: ", values)
         cursor.execute(query, values)
         connection.commit() # NOTE: entry will not be inserted w/o this
         cursor.close()
         connection.close()
 
-        return ('Author added!'); # NOTE: :( not a pretty page that displays, needs to redisplay regular website
+        url = ("/authors/" + str(author_id) + "/add_success/" + author_name + "/")
+        return redirect(url)
+
+# ADDED AUTHOR SUCCESSFULLY
+@app.route('/authors/<string:author_id>/add_success/<string:author_name>/')
+def successfully_added_author(author_id, author_name):
+    id = int(author_id)
+    connection = mysql.connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    select_stmt = "select Authors.author_name, Authors.author_id from Authors order by Authors.author_name ASC;"
+    cursor.execute(select_stmt)
+    result = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return render_template('authors.html', authors=result, new_author=id, new_author_name=author_name)
+
+# EDIT AN AUTHOR
+@app.route('/edit_author/<string:author_id>/', methods=['POST'])
+def edit_author(author_id):
+    # Get modal form information
+    name = request.form['update_author_name']
+    bio = request.form['update_author_bio']
+
+    connection = mysql.connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+
+    # Make sure quotes are escaped properly
+    quotes = "\""
+    escaped_quotes = "\\\""
+    quote = "\'"
+    escaped_quote = "\\\'"
+    bio = bio.replace(quotes, escaped_quotes)
+    bio = bio.replace(quote, escaped_quote)
+
+    name_string = ("'" + name + "'")
+    query1 = "UPDATE Authors SET author_name = " + name_string + " WHERE author_id = " + author_id
+
+    bio_string = ("'" + bio + "'")
+    query2 = "UPDATE Authors SET author_description = " + bio_string + " WHERE author_id = " + author_id
+
+    cursor.execute(query1)
+    cursor.execute(query2)
+
+    connection.commit()
+    cursor.close()
+    connection.close()
+
+    url = ("/author/" + author_id + "/edit_success/")
+    return redirect(url)
+
+# SUCCESSFULLY EDITED AN AUTHOR (redisplay author page)
+@app.route('/author/<string:author_id>/edit_success/')
+def successfully_edited_author(author_id):
+    edit_success = 1
+    connection = mysql.connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    select_stmt = "select auth.author_id, auth.author_name, auth.author_description, book.isbn, book.book_title from Authors auth join Books_Authors ba on ba.author_id = auth.author_id join Books book on book.isbn = ba.isbn where auth.author_id = " + author_id
+    cursor.execute(select_stmt)
+    result = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return render_template('author.html', author=result, edit_success=edit_success)
+
+# REMOVE AN AUTHOR
+@app.route('/rem_author', methods=['POST'])
+def rem_author():
+    author_id = request.form['author_id'] # Step 1: Get Author info
+    connection = mysql.connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    query1 = "DELETE FROM Books_Authors WHERE Books_Authors.author_id = " + author_id
+    query2 = "DELETE FROM Authors WHERE Authors.author_id = " + author_id
+    cursor.execute(query1)  # Step 2: Remove Author from Authors
+    cursor.execute(query2)  # Step 3: Unlink Author from Books in database
+
+    connection.commit()
+    cursor.close()
+    connection.close()
+
+    url = ("/authors/rem_success")
+    return redirect(url)
+
+# REMOVED AUTHOR SUCCESSFULLY
+@app.route('/authors/rem_success')
+def successfully_deleted_author():
+    rem_success = 1
+    connection = mysql.connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    select_stmt = "select Authors.author_name, Authors.author_id from Authors order by Authors.author_name ASC;"
+    cursor.execute(select_stmt)
+    result = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return render_template('authors.html', authors=result, rem_success=rem_success)
 
 @app.route('/genres')
 def genres():
@@ -303,7 +390,6 @@ def add_genre():
         cursor = connection.cursor(pymysql.cursors.DictCursor)
         query = 'INSERT INTO Genres (genre_id, genre_name) VALUES (%s,%s)'
         values = (genre_id, genre_name)
-        print("Values to be inserted are: ", values)
         cursor.execute(query, values)
         connection.commit() # NOTE: entry will not be inserted w/o this
         cursor.close()
@@ -329,7 +415,6 @@ def rem_genre(id):
         url = ("/genre/" + id + "/" + "error/")
         print(url)
         return redirect(url)
-        # return redirect("http://www.example.com", code=302)
 
     # Delete Genre
     else:
@@ -437,7 +522,7 @@ def rating_removed_successfully(isbn):
     # Step 1: Fetch Book's information
     connection = mysql.connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)
-    select_stmt = "select book.isbn, book.book_title, book.year_published, book.book_description, auth.author_name, genre.genre_name from Books book join Books_Authors ba on ba.isbn = book.isbn join Authors auth on auth.author_id = ba.author_id join Genres_Books gb on gb.isbn = book.isbn join Genres genre on genre.genre_id = gb.genre_id where book.isbn = " + isbn
+    select_stmt = "select book.isbn, book.book_title, book.year_published, book.book_description, auth.author_name, auth.author_id, genre.genre_name from Books book join Books_Authors ba on ba.isbn = book.isbn join Authors auth on auth.author_id = ba.author_id join Genres_Books gb on gb.isbn = book.isbn join Genres genre on genre.genre_id = gb.genre_id where book.isbn = " + isbn
     cursor.execute(select_stmt)
     BookSQL = cursor.fetchall()
     cursor.close()
@@ -484,7 +569,7 @@ def review_removed_successfully(isbn):
     # Step 1: Fetch Book's information
     connection = mysql.connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)
-    select_stmt = "select book.isbn, book.book_title, book.year_published, book.book_description, auth.author_name, genre.genre_name from Books book join Books_Authors ba on ba.isbn = book.isbn join Authors auth on auth.author_id = ba.author_id join Genres_Books gb on gb.isbn = book.isbn join Genres genre on genre.genre_id = gb.genre_id where book.isbn = " + isbn
+    select_stmt = "select book.isbn, book.book_title, book.year_published, book.book_description, auth.author_name, auth.author_id, genre.genre_name from Books book join Books_Authors ba on ba.isbn = book.isbn join Authors auth on auth.author_id = ba.author_id join Genres_Books gb on gb.isbn = book.isbn join Genres genre on genre.genre_id = gb.genre_id where book.isbn = " + isbn
     cursor.execute(select_stmt)
     BookSQL = cursor.fetchall()
     cursor.close()
@@ -533,7 +618,7 @@ def review_edit_successfully(isbn):
     # Step 1: Fetch Book's information
     connection = mysql.connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)
-    select_stmt = "select book.isbn, book.book_title, book.year_published, book.book_description, auth.author_name, genre.genre_name from Books book join Books_Authors ba on ba.isbn = book.isbn join Authors auth on auth.author_id = ba.author_id join Genres_Books gb on gb.isbn = book.isbn join Genres genre on genre.genre_id = gb.genre_id where book.isbn = " + isbn
+    select_stmt = "select book.isbn, book.book_title, book.year_published, book.book_description, auth.author_name, auth.author_id, genre.genre_name from Books book join Books_Authors ba on ba.isbn = book.isbn join Authors auth on auth.author_id = ba.author_id join Genres_Books gb on gb.isbn = book.isbn join Genres genre on genre.genre_id = gb.genre_id where book.isbn = " + isbn
     cursor.execute(select_stmt)
     BookSQL = cursor.fetchall()
     cursor.close()
@@ -594,7 +679,6 @@ def add_review():
         cursor = connection.cursor(pymysql.cursors.DictCursor)
         query = 'INSERT INTO Ratings (rating_id, isbn, star_rating, rating_date) VALUES (%s,%s,%s,%s)'
         values = (rating_id, isbn, star_rating, rating_date)
-        print("Values to be inserted into Ratings are: ", values)
         cursor.execute(query, values)
         connection.commit() # Note: if you comment this out, the Rating will not actually be added to the database, which will cause errors in all subsequent insertions/updates for this function
         cursor.close()
@@ -622,7 +706,6 @@ def add_review():
             cursor = connection.cursor(pymysql.cursors.DictCursor)
             query = 'INSERT INTO Reviews (review_id, rating_id, isbn, review_content, review_date) VALUES (%s,%s,%s,%s,%s)'
             values = (review_id, rating_id, isbn, review_content, review_date)
-            print("Values to be inserted into Reviews are: ", values)
             cursor.execute(query, values)
             connection.commit()
             cursor.close()
@@ -633,12 +716,46 @@ def add_review():
             cursor = connection.cursor(pymysql.cursors.DictCursor)
             query = 'UPDATE Ratings set review_id = %s WHERE rating_id = %s'
             values = (review_id, rating_id)
-            print("Values to be updated into Ratings are: ", values)
             cursor.execute(query, values)
             connection.commit()
             cursor.close()
             connection.close()
-        return ('Thank you for your rating/review!');
+
+        url = ("/book/" + isbn + "/add_rev_success/")
+        return redirect(url)
+
+# NEW REVIEW WAS ADDED SUCCESSFULLY
+@app.route('/book/<string:isbn>/add_rev_success/')
+def review_add_success(isbn):
+    review_add = "The review add succeeded"
+    # Step 1: Fetch Book's information
+    connection = mysql.connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    select_stmt = "select book.isbn, book.book_title, book.year_published, book.book_description, auth.author_name, auth.author_id, genre.genre_name from Books book join Books_Authors ba on ba.isbn = book.isbn join Authors auth on auth.author_id = ba.author_id join Genres_Books gb on gb.isbn = book.isbn join Genres genre on genre.genre_id = gb.genre_id where book.isbn = " + isbn
+    cursor.execute(select_stmt)
+    BookSQL = cursor.fetchall()
+    cursor.close()
+    connection.close()
+
+    # Step 2: Fetch Book's Reviews with Ratings
+    connection = mysql.connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    select_stmt = "select book.isbn, rate.rating_id, rate.review_id, rate.star_rating, rate.rating_date, rev.review_content from Books book join Ratings rate on rate.isbn = book.isbn join Reviews rev on rev.isbn = rate.isbn where book.isbn = " + isbn + " AND rev.rating_id = rate.rating_id AND rate.review_id = rev.review_id"
+    cursor.execute(select_stmt)
+    ReviewSQL = cursor.fetchall()
+    cursor.close()
+    connection.close()
+
+    # Step 3: Fetch Book's Ratings that have no Review (star rating only)
+    connection = mysql.connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    select_stmt = "SELECT * FROM Ratings WHERE isbn = " + isbn + " AND review_id IS NULL"
+    cursor.execute(select_stmt)
+    RatingSQL = cursor.fetchall()
+    cursor.close()
+    connection.close()
+
+    return render_template('book.html', bookresult=BookSQL, reviews=ReviewSQL, ratings=RatingSQL, review_add=review_add)
 
 # EDIT STAR RATING
 @app.route('/edit_rating/<string:isbn>/<string:rating_id>/', methods=['POST'])
@@ -662,7 +779,7 @@ def rating_edit_successfully(isbn):
     # Step 1: Fetch Book's information
     connection = mysql.connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)
-    select_stmt = "select book.isbn, book.book_title, book.year_published, book.book_description, auth.author_name, genre.genre_name from Books book join Books_Authors ba on ba.isbn = book.isbn join Authors auth on auth.author_id = ba.author_id join Genres_Books gb on gb.isbn = book.isbn join Genres genre on genre.genre_id = gb.genre_id where book.isbn = " + isbn
+    select_stmt = "select book.isbn, book.book_title, book.year_published, book.book_description, auth.author_name, auth.author_id, genre.genre_name from Books book join Books_Authors ba on ba.isbn = book.isbn join Authors auth on auth.author_id = ba.author_id join Genres_Books gb on gb.isbn = book.isbn join Genres genre on genre.genre_id = gb.genre_id where book.isbn = " + isbn
     cursor.execute(select_stmt)
     BookSQL = cursor.fetchall()
     cursor.close()

@@ -1,4 +1,4 @@
-<!-- Gets dictionary 'bookresult' with keys: [isbn, book_title, year_published, book_description, author_name, genre_name] -->
+<!-- Gets dictionary 'bookresult' with keys: [isbn, book_title, year_published, book_description, author_name, author_id, genre_name] -->
 <!-- Gets dictionary 'reviews' with keys: [isbn, rating_id, review_id, star_rating, rating_date, review_content] -->
 <!-- Gets dictionary 'ratings' with keys: [isbn, rating_id, review_id, star_rating, rating_date] -->
 
@@ -6,7 +6,7 @@
 <!-- MAY receive 'review_rem' if user just removed a Review -->
 <!-- MAY receive 'review_edit' if user just upated a Review -->
 <!-- MAY receive 'rating_edit' if user just upated a Rating -->
-
+<!-- MAY receive 'review_add' if user just left a new Rating or Review for this Book -->
 <!-- Need additional logic to display multiple authors -->
 <!-- May need additional logic or different SQL to display reviews without ratings and vice versa -->
 
@@ -16,6 +16,14 @@
 
 {% block body %}
   <div class="jumbotron text-center mt-4">
+
+    {% if review_add is defined %}
+    <div class="row mt-2 mb-2">
+      <ul>
+        <li class="list-group-item bg-success text-light px-4"><h6>Thank you!</h6> Reviews and Ratings make Paperstacks a better site.</li>
+      </ul>
+    </div>
+    {% endif %}
 
     {% if rating_edit is defined %}
     <div class="row mt-2 mb-2">
@@ -56,22 +64,23 @@
     </div> -->
     {% for book in bookresult %}
     <div class="row mt-4">
-      <h3>{{ book['book_title'] }}</h3>
+      <h3 class="name">{{ book['book_title'] }}</h3>
     </div>
     <div class="row mt-4">
-      <h5">by {{ book['author_name'] }}</h5>
+      <h5>by <a href="/author/{{ book['author_id'] }}/">{{ book['author_name'] }}</a></h5>
     </div>
     <div class="row mt-4">
-      <p><b>Genre:</b> {{ book['genre_name'] }}<br>
-      <b>Year Published:</b> {{book['year_published'] }}<br>
+      <p class="text-left">
+        <b>Genre:</b> {{ book['genre_name'] }}<br>
+        <b>Year Published:</b> {{book['year_published'] }}<br>
         <b>ISBN:</b> {{ book['isbn'] }}
       </p>
     </div>
-      <p> {{ book['book_description'] }}</p>
+      <p class="text-left"> {{ book['book_description'] }}</p>
 
       <div>
-        <a href="#" id="edit-book-button" class="btn btn-primary mx-2" data-toggle="modal" data-target="#edit-book-modal" >Edit Book</a>
-      <button id="rem-book-button" class="btn btn-primary mx-2">Remove Book</button>
+        <a href="#" id="edit-book-button" class="btn btn-secondary mx-2" data-toggle="modal" data-target="#edit-book-modal" >Edit Book</a>
+      <button id="rem-book-button" class="btn btn-secondary mx-2">Remove Book</button>
       </div>
 
       <div class="modal hide fade" tabindex="-1" role="dialog" area-labelledby="Edit Book" area-hidden="true" id="edit-book-modal">
@@ -129,9 +138,7 @@
       </p> -->
 
     <div class="row mt-4">
-      <h3 class="header3 text-left mb-4">Reviews & Ratings</h3>
-
-
+      <h5 class="header3 text-left mb-4">Reviews & Ratings</h5>
     </div>
       {% for review in reviews %}
         <h5 class="subheader text-left">Rating:
@@ -156,8 +163,8 @@
         <p class="text-left"><b>Review:</b><br>
           {{ review['review_content'] }}
         </p>
-        <div>
 
+        <div>
           <!-- Edit Rating Modal and Form -->
           <div class="modal" id="edit-rating-modal" tabindex="-1" role="dialog" area-labelledby="Edit Rating" area-hidden="true">
             <div class="modal-dialog" role="document">
@@ -311,7 +318,49 @@
         <hr />
       {% endfor %}
       {% endif %}
-    </div>
+
+      {% if (reviews|length == 0) and (ratings|length == 0) %}
+        <p class="text-left"> No reviews or ratings yet! Why don't you leave one?</p>
+      {% endif %}
+        <a href="#add-review-modal" role="button" class="btn btn-primary mx-2" data-toggle="modal">Add Your Review</a>
+
+        <!-- Add Your Review Modal and Form -->
+        <div class="modal" id="add-review-modal" tabindex="-1" role="dialog" area-labelledby="Edit Rating" area-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">New Review of {{ bookresult[0]['book_title'] }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+              </div><!-- end of modal header -->
+              <div class="modal-body">
+                <!-- add review modal form -->
+                <form id="addReview" method="post" action="/add_review">
+                  <input type="hidden" name="author_book" value="{{ bookresult[0]['isbn'] }}">
+                  <div class="form-group">
+                    <label for="user_rating">Star Rating:</label>
+                    <select class="form-control" name="user_rating">
+                      <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
+                      <option value="4">&#9733;&#9733;&#9733;&#9733;&#9734;</option>
+                      <option value="3">&#9733;&#9733;&#9733;&#9734;&#9734;</option>
+                      <option value="2">&#9733;&#9733;&#9734;&#9734;&#9734;</option>
+                      <option value="1">&#9733;&#9734;&#9734;&#9734;&#9734;</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="user_review">Review (optional):</label>
+                    <textarea name="user_review" rows="4" class="form-control input-lg" placeholder="Write your review here to help other Paperstacks readers find good books!"></textarea>
+                  </div>
+
+                  <button id="add-review-submit" class="btn btn-primary" type="submit">Submit</button>
+                </form><!-- end of add review modal form -->
+              </div>
+            </div>
+          </div>
+        </div><!-- end of Add Your Review Modal and Form -->
+    </div><!-- end page container -->
 
 
 {% endblock %}

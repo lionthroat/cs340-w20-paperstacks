@@ -1,18 +1,41 @@
-<!--This page is sent a dictionary 'authors' by the server with these keys: -->
-<!-- [author_id, author_name] -->
+<!-- Page gets dictionary 'authors' from server with keys: [author_id, author_name] -->
 <!-- This will likely need additional logic to display multiple authors -->
+
+<!-- MAY get 'rem_success' if author was just removed -->
+<!-- MAY get 'new_author' (author_id) and 'new_author_name' if author was just added -->
+
 {% extends 'layout.html' %}
 
 {% block body %}
+  {% if rem_success is defined %}
+  <div class="row mt-2 mb-2">
+    <ul>
+      <li class="list-group-item bg-primary text-light mt-5"><h6>Success!</h6> Author was removed from database! Note: If they were the only listed Author on any Book, there may now be Books without listed Authors.</li>
+    </ul>
+  </div>
+  {% endif %}
+  {% if new_author is defined %}
+  <div class="row mt-2 mb-2">
+    <ul>
+      <li class="list-group-item bg-success text-light"><h6>Success:</h6> {{ new_author_name }} was added to the database. Thanks for the addition!</li>
+    </ul>
+  </div>
+  {% endif %}
 
-  <div class="container mt-5 mb-5">
-    <h4 class="name">Authors</h4>
+  <div class="container mt-3 mb-5">
+    <h4 class="name mb-3">Authors</h4>
 
     <ul class="list-group">
       {% for author in authors %}
-        <li class="list-group-item">
-          <a href="author/{{ author['author_id'] }}">{{ author['author_name'] }}</a>
-        </li>
+        {% if author['author_id'] == new_author %}
+          <li class="list-group-item bg-success">
+            <b><a href="/author/{{ author['author_id'] }}" class="text-light">{{ author['author_name'] }}</a></b>
+          </li>
+        {% else %}
+          <li class="list-group-item">
+            <a href="/author/{{ author['author_id'] }}">{{ author['author_name'] }}</a>
+          </li>
+        {% endif%}
       {% endfor %}
     </ul>
   </div>
