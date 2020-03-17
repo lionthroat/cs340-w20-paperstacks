@@ -1,18 +1,44 @@
-<!--This page currently receives array 'books' with information in the following indices: -->
-<!-- [isbn, book_title, author_name] -->
-<!-- This will likely need additional logic to display multiple authors -->
+<!-- Gets dictionary 'books' with keys: [isbn, book_title, author_name] -->
+<!-- Gets dictionary 'orphans' with keys: [isbn, book_title] -->
+<!-- May get strings 'code' and 'code_msg' -->
 {% extends 'layout.html' %}
 
 {% block body %}
 
+  {% if code_msg is defined %}
+    <div class="row mt-2 mb-2" id="notification">
+      <ul>
+        <li class="list-group-item bg-primary text-light px-4">{{ code_msg }} <button onclick="close_notification()" class="btn ml-5 text-light"><b>&times;</b></button></li>
+      </ul>
+    </div>
+  {% endif %}
+
+  <script language="javascript">
+    function close_notification() {
+      var x = document.getElementById("notification");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+  </script>
+  
   <div class="container mt-5 mb-5">
     <h4 class="name">Books</h4>
 
     <ul class="list-group">
+      {% for book in orphans %}
+        <li class="list-group-item">
+          <a href="book/{{ book['isbn'] }}"><img src="../static/book-img.png" alt="{{ book['book_title'] }}" height="42" width="42" class="my-2"></a>
+          <a href="book/{{ book['isbn'] }}" class="mx-2">{{ book['book_title'] }}</a><br>
+          by Unknown
+        </li>
+      {% endfor %}
       {% for book in books %}
         <li class="list-group-item">
-          <a href="book/{{ book['isbn'] }}"><img src="../static/book-img.png" alt={{ book['book_title'] }} height="42" width="42"></a>
-          <a href="book/{{ book['isbn'] }}">{{ book['book_title'] }}</a>
+          <a href="book/{{ book['isbn'] }}"><img src="../static/book-img.png" alt="{{ book['book_title'] }}" height="42" width="42" class="my-2"></a>
+          <a href="book/{{ book['isbn'] }}" class="mx-2">{{ book['book_title'] }}</a><br>
           by {{ book['author_name'] }}
         </li>
       {% endfor %}

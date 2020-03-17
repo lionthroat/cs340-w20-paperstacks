@@ -57,33 +57,50 @@ $("#add-author").click(function() {
 
     <div class="form-group">
         <label for="book_title">Title - required</label>
-        <input type="text" name="book_title" class="form-control input-lg" placeholder="The Handmaid's Tale">
+        <input type="text" name="book_title" class="form-control input-lg" placeholder="The Handmaid's Tale" required="required">
     </div>
 
     <div id="author_section">
       <div class="form-group">
-        <label for="book_author">Select Author(s) - can be added later</label>
-        <select multiple class="form-control" id="book_author" name="book_author">
+        <label for="book_author">Select Author(s) - pick at least one, OR add a new one below</label>
+        <select multiple class="form-control" id="book_author" name="book_author" data-max-options="5">
         {% for author in authors %}
           <option value="{{ author['author_id'] }}">{{ author['author_name'] }}</option>
         {% endfor %}
         </select>
       </div>
 
-        <!--<div id="author_drop" class="dropdown">
-        <div id="author_down" class="dropdown-content" height="10px">
-          </div>
-        </div>
-        <button id="add-author" class="btn btn-secondary btn-sm" onclick="addAuthor()">
-        &plus; Add Existing Author
-        </button>-->
-        <!--<button id="new-author" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#new-auth-modal">&plus; Add New Author</button>-->
+      <a onclick="showAddAuthor()" href="#">&plus; Add New Author</a>
 
-      <!-- Had to make the Add New Author button into regular link because otherwise it was calling the POST method when you add a new Author, which called the server to try to add a book. This broke everything. Not sure if another way around it -->
-      <a href="#" id="new-author" data-toggle="modal" data-target="#new-auth-modal">&plus; Add New Author</a>
+      <div id="add_author_div" class="bg-light my-2 p-2" style="display:none;">
+        <div class="form-group">
+          <label for="author_name">Author Name:</label>
+          <input type="text" name="author_name" class="form-control input-lg" placeholder="Toni Morrison">
+        </div>
+
+        <div class="form-group">
+          <label for="author_description">Author Bio:</label>
+          <textarea name="author_description" rows="6" class="form-control input-lg" placeholder="Write a blurb here"></textarea>
+        </div>
+      </div>
+
+      <script language="javascript">
+      function showAddAuthor() {
+        var x = document.getElementById("add_author_div");
+        if (x.style.display === "none") {
+          x.style.display = "block";
+        } else {
+          x.style.display = "none";
+        }
+      }
+      </script>
+
+      <!-- This link opens the full Add Author modal that is not yet implemented -->
+      <!-- <a href="#" id="new-author" data-toggle="modal" data-target="#new-auth-modal">&plus; Add New Author</a> -->
     </div>
 
-      <div class="modal" tabindex="-1" role="dialog" area-labelledby="Add New Author" area-hidden="true" id="new-auth-modal">
+    <!-- Modal: Currently not used -->
+      <!-- <div class="modal" tabindex="-1" role="dialog" area-labelledby="Add New Author" area-hidden="true" id="new-auth-modal">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -95,11 +112,11 @@ $("#add-author").click(function() {
             <div class="modal-body">
               <div class="filter-input-container">
                 <label for="filter-author" class="filter-input-label">Author Name: </label>
-                <input type="text" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="Toni Morrison">
+                <input type="text" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="Toni Morrison" required="required">
             </div>
             <div class="filter-input-container">
                 <label for="filter-author" class="filter-input-label">Author Bio: </label>
-                <input type="textarea" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="Write a blurb here">
+                <input type="textarea" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="Write a blurb here" required="required">
             </div>
             <div class="custom-file">
               <input type="file" class="custom-file-input" id="uploadAuthorImg">
@@ -112,21 +129,23 @@ $("#add-author").click(function() {
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="form-group mt-3">
         <label for="book_isbn">ISBN-10 - required</label>
-        <input type="number" name="book_isbn" class="form-control" placeholder="98735513209">
+        <input type="number" name="book_isbn" class="form-control" placeholder="98735513209" required="required">
+        <!-- Below is the same input as above, but with Kayla's nifty validateISBN function! I have it commented out for now because it was being cranky with me and didn't accept even valid inputs. How rude. -->
+        <!-- <input type="number" name="book_isbn" class="form-control" placeholder="98735513209" oninput="validateISBN(this)" pattern=".{10,10}" required="required"> -->
       </div>
 
       <div class="form-group">
         <label for="book_year">Year Published - required</label>
-        <input type="number" name="book_year" class="form-control" placeholder="2007">
+        <input type="number" name="book_year" class="form-control" placeholder="2007" required="required">
       </div>
 
       <div class="form-group">
         <label for="book_genre">Genre(s) - pick at least one</label>
-        <select multiple class="form-control" name="book_genre" id="book_genre">
+        <select multiple class="form-control" name="book_genre" id="book_genre" required="required">
         {% for genre in genres %}
           <option value="{{ genre['genre_id'] }}">{{ genre['genre_name'] }}</option>
         {% endfor %}
@@ -135,13 +154,13 @@ $("#add-author").click(function() {
 
       <div class="form-group">
         <label for="book_description">Book Description:</label>
-        <input type="textarea" name="book_description" class="form-control input-lg" placeholder="Summary or blurb here">
+        <textarea name="book_description" rows="6" class="form-control input-lg"></textarea>
       </div>
       <div class="custom-file">
         <input type="file" class="custom-file-input" id="uploadBookImg">
         <label class="custom-file-label" for="uploadBookImg">Upload Book Image</label>
       </div>
-    <button type="submit" id="add-book-button" class="action-button btn btn-primary">Add Book to Paperstacks</button>
+    <button type="submit" id="add-book-button" class="action-button btn btn-primary mt-4">Add Book to Paperstacks</button>
   </form>
 
 {% endblock %}

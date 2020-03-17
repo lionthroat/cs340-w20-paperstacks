@@ -1,85 +1,89 @@
 <!-- Gets dictionary 'author' with keys: [author_id, author_name, author_description, isbn, book_title ] -->
+<!-- May get author_bio if available -->
 
 <!-- MAY get 'edit_success' if author was updated -->
 
 {% extends 'layout.html' %}
 
 {% block body %}
+
 		<div class="content mt-4 pt-4 pb-1 mb-4">
 
 			{% if edit_success is defined %}
 			<div class="row mt-2 mb-2">
-				<ul>
-					<li class="list-group-item bg-primary text-light"><h6>Success:</h6> This Author was updated. Thank you for contributing to Paperstacks!</li>
-				</ul>
+			  <ul>
+			    <li class="list-group-item bg-primary text-light"><h6>Success:</h6> This Author was updated. Thank you for contributing to Paperstacks!</li>
+			  </ul>
 			</div>
 			{% endif %}
 
 			<div class="row">
-				<h4 class="name ml-4"><b>{{ author[0]['author_name'] }}</b></h4>
+			  <h4 class="name ml-4"><b>{{ author[0]['author_name'] }}</b></h4>
 			</div>
 			<div class="row">
-				<div class="col-lg-8 mt-4">
-						{% if author[0]['author_description'] is defined %}
-							<p>{{ author[0]['author_description'] }}</p>
-						{% else %}
-							<p><i>This Author does not have a bio yet. Please consider adding one!</i></p>
-						{% endif %}
-				</div>
+			  <div class="col-lg-8 mt-4">
+					{% if author[0]['author_description'] != None %}
+						{{ author[0]['author_description'] }}
+					{% else %}
+						This author has no bio yet. Please consider adding one!
+					{% endif %}
+			  </div>
 			</div>
 			<div class="row mt-4 pt-1 pb-4 mb-4">
 
-        <a href="#editAuthorModal" role="button" class="btn btn-primary mx-2" data-toggle="modal">Edit Author</a>
+			  <a href="#editAuthorModal" role="button" class="btn btn-primary mx-2" data-toggle="modal">Edit Author</a>
 
-				<form id="rem-author-button" action="/rem_author" method="post">
-					<input type="hidden" name="author_id" value="{{ author[0]['author_id'] }}">
-					<button type="submit" id="rem-author-button" class="btn btn-primary mx-2">Remove Author</button>
-				</form>
-
-				<!-- Edit Author Modal -->
-				<div class="modal hide fade" tabindex="-1" role="dialog" area-labelledby="Edit Author" area-hidden="true" id="editAuthorModal">
-		        <div class="modal-dialog" role="document">
-		          <div class="modal-content">
-
-		            <div class="modal-header">
-		              <h5 class="modal-title">Edit Author</h5>
-		              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		                <span aria-hidden="true">&times;</span>
-		              </button>
-		            </div>
-
-		            <div class="modal-body">
-
-		                <form id="editAuthorForm" method="post" action="/edit_author/{{ author[0]['author_id'] }}/">
-
-		                  <label for="update_author_name">Author Name:</label>
-		                  <input type="text" name="update_author_name" id="update_author_name" class="form-control input-lg" value="{{ author[0]['author_name'] }}">
-
-											<label for="update_author_bio">Author Bio:</label>
-        							<textarea name="update_author_bio" id="update_author_bio" rows="8" class="form-control input-lg">{{ author[0]['author_description'] }}</textarea>
-
-		                  <button id="edit-author-submit" class="btn btn-primary mt-2" type="submit">Submit</button>
-		                </form>
-
-		            </div>
-
-		          <div class="modal-footer">
-		            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		          </div><!-- End of Modal Footer -->
-		      </div><!-- End of Edit Author Modal -->
+			  <form id="rem-author-button" action="/rem_author" method="post">
+			    <input type="hidden" name="author_id" value="{{ author[0]['author_id'] }}">
+			    <button type="submit" id="rem-author-button" class="btn btn-primary mx-2">Remove Author</button>
+			  </form>
 			</div>
 
-			<div class="row"><!-- Books Row -->
-				<h4 class="name ml-4">Books by {{ author[0]['author_name'] }}</h4>
-			</div>
 			<div class="row">
-				<ul>
-        {% for book in author %}
-          <li><a href="/book/{{ book['isbn'] }}">{{ book['book_title'] }}</a></li>
-        {% endfor %}
-				</ul>
+			  <h4 class="name ml-4">Books by {{ author[0]['author_name'] }}</h4>
 			</div>
 
+			<div class="row">
+			  <ul>
+			  {% for book in author %}
+			    <li><a href="/book/{{ book['isbn'] }}">{{ book['book_title'] }}</a></li>
+			  {% endfor %}
+			  </ul>
+			</div>
+
+			</div>
+
+			<div class="modal hide fade" tabindex="-1" role="dialog" area-labelledby="Edit Author" area-hidden="true" id="editAuthorModal">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+
+							<div class="modal-header">
+								<h5 class="modal-title">Edit Author</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+
+							<div class="modal-body">
+
+									<form id="editAuthorForm" method="post" action="/edit_author/{{ author[0]['author_id'] }}/">
+
+										<label for="update_author_name">Author Name:</label>
+										<input type="text" name="update_author_name" id="update_author_name" class="form-control input-lg" value="{{ author[0]['author_name'] }}">
+
+										<label for="update_author_bio">Author Bio:</label>
+										<textarea name="update_author_bio" id="update_author_bio" rows="8" class="form-control input-lg">{{ author[0]['author_description'] }}</textarea>
+
+										<button id="edit-author-submit" class="btn btn-primary mt-2" type="submit">Submit</button>
+									</form>
+
+							</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
+				</div>
 		</div>
+	</div>
 
 {% endblock %}

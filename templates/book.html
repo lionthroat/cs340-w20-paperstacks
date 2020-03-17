@@ -1,101 +1,100 @@
 <!-- For Basic Page Display: -->
-<!-- Gets dictionary 'bookresult' with keys: [isbn, book_title, year_published, book_description, author_name, author_id, genre_name] -->
-<!-- Gets dictionary 'reviews' with keys: [isbn, rating_id, review_id, star_rating, rating_date, review_content] -->
-<!-- Gets dictionary 'ratings' with keys: [isbn, rating_id, review_id, star_rating, rating_date] -->
+<!-- 'book' with keys: [isbn, book_title, year_published, book_description, genre_name] -->
+<!-- 'authors' with keys: [author_name, author_id] -->
+<!-- 'reviews' with keys: [isbn, rating_id, review_id, star_rating, rating_date, review_content] -->
+<!-- 'ratings' with keys: [isbn, rating_id, review_id, star_rating, rating_date] -->
+<!-- If stars ratings, gets strings: 'int_avg', 'float_avg', 'rating_count' -->
 
 <!-- For Edit Book Modal: -->
-<!-- Gets dictionary 'authors' with keys: [author_id, author_name] -->
-<!-- Gets dictioanry 'genres' with keys: [genre_id, genre_name] -->
+<!-- Gets dictionary 'all_authors' with keys: [author_id, author_name] -->
+<!-- Gets dictionary 'all_genres' with keys: [genre_id, genre_name] -->
 
-<!-- For POST method success and fdilure messages: -->
-<!-- MAY receive 'rating_rem' if user just removed a Rating -->
-<!-- MAY receive 'review_rem' if user just removed a Review -->
-<!-- MAY receive 'review_edit' if user just upated a Review -->
-<!-- MAY receive 'rating_edit' if user just upated a Rating -->
-<!-- MAY receive 'review_add' if user just left a new Rating or Review for this Book -->
-<!-- MAY receive 'edit_success' if user just edited this Book -->
+<!-- May get 'code_msg' string for POST method success and failure notices -->
 
-<!-- Issues: -->
 <!-- Need additional logic to display multiple authors -->
-<!-- May need additional logic or different SQL to display reviews without ratings and vice versa -->
 
 {% extends 'layout.html' %}
 
 {% block body %}
   <div class="jumbotron text-center mt-4">
 
-    {% if edit_success is defined %}
-    <div class="row mt-2 mb-2">
-      <ul>
-        <li class="list-group-item bg-primary text-light px-4"><h6>Success!</h6> Book has been updated.</li>
-      </ul>
-    </div>
+    {% if code_msg is defined %}
+      <div class="row mt-2 mb-2" id="notification">
+        <ul>
+          <li class="list-group-item bg-primary text-light px-4">{{ code_msg }} <button onclick="close_notification()" class="btn ml-5 text-light"><b>&times;</b></button></li>
+        </ul>
+      </div>
     {% endif %}
 
-    {% if review_add is defined %}
-    <div class="row mt-2 mb-2">
-      <ul>
-        <li class="list-group-item bg-success text-light px-4"><h6>Thank you!</h6> Reviews and Ratings make Paperstacks a better site.</li>
-      </ul>
-    </div>
-    {% endif %}
-
-    {% if rating_edit is defined %}
-    <div class="row mt-2 mb-2">
-      <ul>
-        <li class="list-group-item bg-primary text-light"><h6>Success:</h6> The selected item was changed or removed.</li>
-      </ul>
-    </div>
-    {% endif %}
-
-    {% if rating_rem is defined %}
-    <div class="row mt-2 mb-2">
-      <ul>
-        <li class="list-group-item bg-primary text-light"><h6>Success:</h6> The selected item was changed or removed.</li>
-      </ul>
-    </div>
-    {% endif %}
-
-    {% if review_rem is defined %}
-    <div class="row mt-2 mb-2">
-      <ul>
-        <li class="list-group-item bg-primary text-light"><h6>Success:</h6> The selected item was changed or removed.</li>
-      </ul>
-    </div>
-    {% endif %}
-
-    {% if review_edit is defined %}
-    <div class="row mt-2 mb-2">
-      <ul>
-        <li class="list-group-item bg-primary text-light"><h6>Success:</h6> The selected item was changed or removed.</li>
-      </ul>
-    </div>
-    {% endif %}
+  <script language="javascript">
+    function close_notification() {
+      var x = document.getElementById("notification");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+  </script>
 
     <!-- <div class="col">
       <div class="book-cover">
         <img src= {{ url_for('static', filename = '../static/crayons-quit.jpg') }} width="400" height="400" alt="previous" title="Previous" border="0">
       </div>
     </div> -->
-    {% for book in bookresult %}
     <div class="row mt-4">
-      <h3 class="name">{{ book['book_title'] }}</h3>
+      <h3 class="name">{{ book[0]['book_title'] }}</h3>
     </div>
     <div class="row mt-4">
-      <h5>by <a href="/author/{{ book['author_id'] }}/">{{ book['author_name'] }}</a></h5>
+      <h5>by
+        {% if authors|length %}
+          {% for author in authors %}
+            <a href="/author/{{ author['author_id'] }}/">{{ author['author_name'] }}</a>
+            {% if not loop.last %}, {% endif %}
+          {% endfor %}
+        {% else %}
+          Unknown
+        {% endif %}
+      </h5>
     </div>
     <div class="row mt-4">
       <p class="text-left">
-        <b>Genre:</b> {{ book['genre_name'] }}<br>
-        <b>Year Published:</b> {{book['year_published'] }}<br>
-        <b>ISBN:</b> {{ book['isbn'] }}
+        {% if rating_count != None %}
+          <b>Average Rating:
+            {% if int_avg == 5 %}
+              &#9733;&#9733;&#9733;&#9733;&#9733;
+            {% elif int_avg == 4 %}
+              &#9733;&#9733;&#9733;&#9733;&#9734;
+            {% elif int_avg == 3 %}
+              &#9733;&#9733;&#9733;&#9734;&#9734;
+            {% elif int_avg == 2 %}
+              &#9733;&#9733;&#9734;&#9734;&#9734;
+            {% else %}
+              &#9733;&#9734;&#9734;&#9734;&#9734;
+            {% endif %}
+             stars,</b> ({{ float_avg }}/5 from {{ rating_count }} ratings)<br>
+        {% else %}
+          <b>Average Rating:</b> (not enough ratings to calculate average)<br>
+        {% endif %}
+
+        <b>Genre(s):</b>
+              {% for genre in book|map(attribute='genre_name')|unique|list %}
+                {{ genre }}
+                {% if not loop.last %}, {% endif %}
+              {% endfor%}<br>
+        <b>Year Published:</b> {{ book[0]['year_published'] }}<br>
+        <b>ISBN:</b> {{ book[0]['isbn'] }}
       </p>
     </div>
-      <p class="text-left"> {{ book['book_description'] }}</p>
+      <p class="text-left"> {{ book[0]['book_description'] }}</p>
 
-      <div>
-        <a href="#" id="edit-book-button" class="btn btn-secondary mx-2" data-toggle="modal" data-target="#edit-book-modal" >Edit Book</a>
-      <button id="rem-book-button" class="btn btn-secondary mx-2">Remove Book</button>
+      <div class="row">
+        <a href="#" id="edit-book-button" class="btn-sm btn-secondary mx-2" data-toggle="modal" data-target="#edit-book-modal">Edit Book</a>
+
+        <form id="rem-book-button" action="/rem_book/{{ book[0]['isbn'] }}" method="post">
+          <button type="submit" id="rem-book-button" class="btn-sm btn-secondary mx-2">Remove Book</button>
+        </form>
+
       </div>
 
       <div class="modal hide fade" tabindex="-1" role="dialog" area-labelledby="Edit Book" area-hidden="true" id="edit-book-modal">
@@ -108,15 +107,15 @@
               </button>
             </div>
             <div class="modal-body">
-              <form id="editBook" method="post" action="/edit_book/{{ book['isbn'] }}/">
+              <form id="editBook" method="post" action="/edit_book/{{ book[0]['isbn'] }}/">
 
                 <label for="update_title">Update Title:</label>
-                <textarea rows="2" name="update_title" class="form-control">{{ book['book_title'] }}</textarea>
+                <textarea rows="2" name="update_title" class="form-control">{{ book[0]['book_title'] }}</textarea>
 
                 <div class="form-group mt-2">
                   <label for="update_author">Update Author(s) - select none to leave same</label>
                   <select multiple class="form-control" name="update_author" data-max-options="5">
-                    {% for author in authors %}
+                    {% for author in all_authors %}
                     <!-- will do this kind of thing to pre-select current authors:
                     https://python-forum.io/Thread-How-do-I-fetch-values-from-db-to-Select-Options-using-Flask-->
                     <option value="{{ author['author_id'] }}">{{ author['author_name'] }}</option>
@@ -127,35 +126,23 @@
                 <div class="form-group">
                   <label for="update_genre">Update Genre(s) - select none to leave same</label>
                   <select multiple class="form-control" name="update_genre" data-max-options="5">
-                  {% for genre in genres %}
+                  {% for genre in all_genres %}
                     <option value="{{ genre['genre_id'] }}">{{ genre['genre_name'] }}</option>
                   {% endfor %}
                   </select>
                 </div>
                 <label for="update_year">Update Year Published:</label>
-                <input type="text" name="update_year" class="form-control" value="{{ book['year_published'] }}">
+                <input type="text" name="update_year" class="form-control" value="{{ book[0]['year_published'] }}">
 
                 <label for="update_book_description" class="mt-2">Update Book Description:</label>
-                <textarea name="update_book_description" id="update_book_description" rows="8" class="form-control input-lg">{{ book['book_description'] }}</textarea>
+                <textarea name="update_book_description" id="update_book_description" rows="8" class="form-control input-lg">{{ book[0]['book_description'] }}</textarea>
 
-                <button id="edit-book-submit" class="btn btn-primary" type="submit">Submit</button>
+                <button id="edit-book-submit" class="btn btn-primary mt-2" type="submit">Submit</button>
               </form>
             </div><!-- end of modal body -->
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" onclick="" data-dismiss="modal">Save Changes</button>
-            </div>
           </div>
         </div>
       </div>
-
-    {% endfor %}
-
-      <!-- Average Rating not implemented yet -->
-      <!-- <h3 class="header3"> Ratings</h3>
-      <p class="rating-content"> Average rating: [avg] out of [#] of reviews &star; &star; &star; &star; &star;
-      </p> -->
 
     <div class="row mt-4">
       <h5 class="header3 text-left mb-4">Reviews & Ratings</h5>
@@ -164,17 +151,13 @@
         <h5 class="subheader text-left">Rating:
           {% if review['star_rating'] == 5 %}
             &#9733;&#9733;&#9733;&#9733;&#9733;
-          {% endif %}
-          {% if review['star_rating'] == 4 %}
+          {% elif review['star_rating'] == 4 %}
             &#9733;&#9733;&#9733;&#9733;&#9734;
-          {% endif %}
-          {% if review['star_rating'] == 3 %}
+          {% elif review['star_rating'] == 3 %}
             &#9733;&#9733;&#9733;&#9734;&#9734;
-          {% endif %}
-          {% if review['star_rating'] == 2 %}
+          {% elif review['star_rating'] == 2 %}
             &#9733;&#9733;&#9734;&#9734;&#9734;
-          {% endif %}
-          {% if review['star_rating'] == 1 %}
+          {% else %}
             &#9733;&#9734;&#9734;&#9734;&#9734;
           {% endif %}
         </h5>
@@ -253,17 +236,13 @@
             </div>
           </div><!-- End of Edit Review Modal and Form -->
 
-          <a href="#edit-rating-modal" role="button" class="btn btn-secondary mx-2" data-toggle="modal">Edit Rating</a>
+          <div class="row"><!-- Div for all the buttons -->
+            <a href="#edit-rating-modal" role="button" class="btn-sm btn-secondary mx-2" data-toggle="modal">Edit Rating</a>
+            <a href="#edit-review-modal" role="button" class="btn-sm btn-secondary mx-2" data-toggle="modal">Edit Review</a>
+            <form id="rem-review-button" action="/rem_review/{{ review['isbn'] }}/{{ review['review_id'] }}" method="post"><button type="submit" id="rem-review-button" class="btn-sm btn-outline-secondary mx-2">Remove Review</button></form>
+            <form id="rem-rating-button" action="/rem_rating/{{ review['isbn'] }}/{{ review['rating_id'] }}" method="post"><button id="rem-rating-button-1" class="btn-sm btn-outline-secondary mx-2">Remove Rating</button</form>
+          </div><!-- end of buttons row-->
 
-          <form id="rem-rating-button" action="/rem_rating/{{ review['isbn'] }}/{{ review['rating_id'] }}" method="post">
-            <button type="submit" id="rem-rating-button-1" class="btn btn-secondary mx-2">Remove Rating</button>
-          </form>
-
-          <a href="#edit-review-modal" role="button" class="btn btn-secondary mx-2" data-toggle="modal">Edit Review</a>
-
-          <form id="rem-review-button" action="/rem_review/{{ review['isbn'] }}/{{ review['review_id'] }}" method="post">
-            <button type="submit" id="rem-review-button" class="btn btn-secondary mx-2">Remove Review</button>
-          </form>
         </div>
 
         <hr />
@@ -276,17 +255,13 @@
         <h5 class="subheader text-left">Rating:
           {% if rating['star_rating'] == 5 %}
             &#9733;&#9733;&#9733;&#9733;&#9733;
-          {% endif %}
-          {% if rating['star_rating'] == 4 %}
+          {% elif rating['star_rating'] == 4 %}
             &#9733;&#9733;&#9733;&#9733;&#9734;
-          {% endif %}
-          {% if rating['star_rating'] == 3 %}
+          {% elif rating['star_rating'] == 3 %}
             &#9733;&#9733;&#9733;&#9734;&#9734;
-          {% endif %}
-          {% if rating['star_rating'] == 2 %}
+          {% elif rating['star_rating'] == 2 %}
             &#9733;&#9733;&#9734;&#9734;&#9734;
-          {% endif %}
-          {% if rating['star_rating'] == 1 %}
+          {% else %}
             &#9733;&#9734;&#9734;&#9734;&#9734;
           {% endif %}
         </h5>
@@ -329,10 +304,10 @@
             </div>
           </div><!-- end of edit rating modal (for ratings without reviews) -->
 
-          <a href="#edit-rating-modal-2" role="button" class="btn btn-secondary mx-2" data-toggle="modal">Edit Rating</a>
+          <a href="#edit-rating-modal-2" role="button" class="btn-sm btn-outline-secondary mx-2" data-toggle="modal">Edit Rating</a>
 
           <form id="rem-rating-button-2" action="/rem_rating/{{ rating['isbn'] }}/{{ rating['rating_id'] }}" method="post">
-            <button type="submit" id="rem-rating-button-2" class="btn btn-secondary mx-2">Remove Rating</button>
+            <button type="submit" id="rem-rating-button-2" class="btn-sm btn-outline-secondary mx-2">Remove Rating</button>
           </form>
 
         </div>
@@ -350,7 +325,7 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">New Review of {{ bookresult[0]['book_title'] }}</h5>
+                <h5 class="modal-title">New Review of {{ book[0]['book_title'] }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -358,7 +333,7 @@
               <div class="modal-body">
                 <!-- add review modal form -->
                 <form id="addReview" method="post" action="/add_review">
-                  <input type="hidden" name="author_book" value="{{ bookresult[0]['isbn'] }}">
+                  <input type="hidden" name="author_book" value="{{ book[0]['isbn'] }}">
                   <div class="form-group">
                     <label for="user_rating">Star Rating:</label>
                     <select class="form-control" name="user_rating">
