@@ -574,7 +574,7 @@ def successfully_deleted_genre(genre_name):
 @app.route('/edit_genre/<string:genre_id>/', methods=['POST'])
 def edit_genre(genre_id):
     new_name = request.form['update_genre_name']
-    name_string = ("'" + new_name + "'")
+    new_name = stringsafe(new_name)
 
     query = "UPDATE Genres SET genre_name = %s WHERE genre_id = %s"
     values = (name_string, genre_id)
