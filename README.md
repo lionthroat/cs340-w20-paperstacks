@@ -2,11 +2,11 @@
 ## Last updated 3/17/2020
 
 ### Notes:
-- 3/17/2020: ISBN validation was temporarily disabled, as it was not accepting valid inputs.
 - 3/17/2020: The Add Author modal on the Add Book page was temporarily disabled, as it needs to be researched how to store information from a modal in the DOM (perhaps in a Javascript object?) and not submit a POST request immediately. This would be required, as the new Author CANNOT be added before their first Book in the database.
 - 3/17/2020: Updated DDQ with one missing Books_Authors entry and one missing Genres_Books entry.
 
 ### Recently Built Features:
+- 3/17/2020 input validation for ISBN and Year Published implemented
 - 3/17/2020: Add a new author at the same time as adding a book.
 - 3/11/2020: Delete Book Functionality.
 - 3/10/2020: Search by whether a book has Reviews. This checkbox is found on main page and search page, and can be used in combination with other search criteria.
@@ -29,6 +29,7 @@
 - 3/7/2020: Advanced Search Functionality (WIP). User can now perform a search from the navigation bar (a simple keyword search), or perform a more advanced search from the Search page or home page. In the advanced search, the user has the option of using one or more of the following criteria: book title (can be a substring), author name (can be a substring), year published, ISBN-10, or genre. Additional search criteria related to ratings/reviews not yet implemented.
 
 ### Recently Fixed Bugs:
+- 3/17/2020: ISBN validation bug fixed, it was due to bad JavaScript.
 - 3/17/2020: Re-fixed previous bug from 3/8/2020, as Reviews were displaying twice again. The updated SQL had mistakenly been deleted at some point.
 - 3/10/2020: Authors without bios and Books without ratings should now display correctly.
 - 3/9/2020: If an Author's bio has quotes in it, the Update function would fail because of lack of escape characters in the resulting string and SQL query. This was fixed using Python's built in replace() function that takes three parameters in the form of: string.replace(problem_substring, fixed_substring), and iterates through the string, replacing any instances of the first string with the second. This means you can create a string: quotes = "\"" and replace it with a fixed string: escaped_quotes = "\\\"".

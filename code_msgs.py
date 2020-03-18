@@ -2,7 +2,7 @@ def Messages():
     messages = [
         'No action taken', # Code 0: No action
         'Success! Book has been updated.', # Code 1: Book edit success
-        'Book edit fail', # Code 2: Book edit fail
+        'Error: Your edit would have left an author without a book. All authors in Paperstacks must be associated with at least one book in our database.', # Code 2: Book edit fail
         'Success! The book was added to Paperstacks. Thanks for your contribution!', # Code 3: Book add success
         'Error: Book was not added successfully. This may be because the ISBN-10 is already registered to a book entry on Paperstacks. Please search for books before attempting to add them.', # Code 4: Book add fail
         'Success: The book was deleted from Paperstacks! (But why did you want to? Remember, you can always edit and existing book!)', # Code 5: Book delete success
@@ -32,6 +32,7 @@ def Messages():
         'Genre delete success', # Code 29: Genre delete success
         'Genre delete fail', # Code 30: Genre delete fail
         'The book was added to Paperstacks! However, you did not select an author or did not enter all information required for adding a new author. You may edit the book or add a new author at any time.', # Code 31: Book added but without author(s)
-        'Success! You added a new book and new author to Paperstacks! Thanks for your contribution!' # Code 32: Book AND Author added success
+        'Success! You added a new book and new author to Paperstacks! Thanks for your contribution!', # Code 32: Book AND Author added success
+        'Error: Could not complete book edit, because your selection for the year published was invalid. Please choose a year from 0 through 2025.', # Code 33: Book edit fail because of invalid year
     ]
     return messages

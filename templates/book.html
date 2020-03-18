@@ -1,7 +1,10 @@
 <!-- For Basic Page Display: -->
 <!-- 'book' with keys: [isbn, book_title, year_published, book_description, genre_name] -->
 <!-- 'authors' with keys: [author_name, author_id] -->
-<!-- 'reviews' with keys: [isbn, rating_id, review_id, star_rating, rating_date, review_content] -->
+
+<!-- For Reviews/Ratings: -->
+<!-- 'reviews' with keys: [isbn, rating_id, review_id, review_date, review_content] -->
+<!-- 'ratings_with_reviews' with keys: [isbn, rating_id, review_id, star_rating, rating_date, review_content] -->
 <!-- 'ratings' with keys: [isbn, rating_id, review_id, star_rating, rating_date] -->
 <!-- If stars ratings, gets strings: 'int_avg', 'float_avg', 'rating_count' -->
 
@@ -147,7 +150,7 @@
     <div class="row mt-4">
       <h5 class="header3 text-left mb-4">Reviews & Ratings</h5>
     </div>
-      {% for review in reviews %}
+      {% for review in ratings_with_reviews %}
         <h5 class="subheader text-left">Rating:
           {% if review['star_rating'] == 5 %}
             &#9733;&#9733;&#9733;&#9733;&#9733;
@@ -315,7 +318,54 @@
       {% endfor %}
       {% endif %}
 
-      {% if (reviews|length == 0) and (ratings|length == 0) %}
+      <!-- Page gets dictionary 'reviews' with keys: [isbn, rating_id, review_id, review_content, review_date] -->
+      {% if reviews|length %}
+        {% for review in reviews %}
+        <div>
+          <p class="text-left"><b>Review left on {{ review['review_date'] }}:</b></p>
+          <p class="text-left">{{ review['review_content'] }}</p>
+
+          <a href="#edit-rev" role="button" class="btn-sm btn-secondary mx-2" data-toggle="modal">Edit Review</a>
+
+          <form id="rem-rev" action="/rem_review/{{ review['isbn'] }}/{{ review['review_id'] }}" method="post">
+            <button type="submit" id="rem-rev" class="btn-sm btn-secondary mx-2">Remove Review</button>
+          </form>
+
+          <!-- Edit Review Modal and Form: ONLY for Reviews without Ratings -->
+          <div class="modal" id="edit-rev" tabindex="-1" role="dialog" area-labelledby="Edit Review" area-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Review</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+
+                </div>
+                <div class="modal-body">
+
+                  <form id="editReview" method="post" action="/edit_review/{{ review['isbn'] }}/{{ review['review_id'] }}/">
+
+                    <label for="update_review_content">Review Content:</label>
+                    <input type="text" name="update_review_content" id="update_review_content" class="form-control input-lg" value="{{ review['review_content'] }}">
+
+                    <button id="edit-review-submit" class="btn btn-primary" type="submit">Submit</button>
+
+                  </form>
+
+                </div>
+                <div class="modal-footer">
+                </div>
+              </div>
+            </div>
+          </div><!-- End of Edit Review Modal and Form -->
+
+          <hr>
+        </div>
+        {% endfor %}
+      {% endif %}
+
+      {% if (reviews|length == 0) and (ratings|length == 0) and (ratings_with_reviews|length == 0) %}
         <p class="text-left"> No reviews or ratings yet! Why don't you leave one?</p>
       {% endif %}
         <a href="#add-review-modal" role="button" class="btn btn-primary mx-2" data-toggle="modal">Add Your Review</a>

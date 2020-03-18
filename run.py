@@ -69,19 +69,25 @@ def book(isbn):
         int_avg = round(AvgRatingSQL[0]['average_rating'])
         rating_count = AvgRatingSQL[0]['rating_count']
 
+    # Step 4: Fetch Book's Reviews WITH Ratings
     select = "select book.isbn, rate.rating_id, rate.review_id, rate.star_rating, rate.rating_date, rev.review_content from Books book join Ratings rate on rate.isbn = book.isbn join Reviews rev on rev.isbn = rate.isbn where book.isbn = " + isbn + " AND rev.rating_id = rate.rating_id AND rate.review_id = rev.review_id"
-    ReviewSQL = fetch(select) # Step 4: Fetch Book's Reviews with Ratings
+    ReviewRatingSQL = fetch(select)
 
+    # Step 5: Fetch Book's Ratings that have NO Review
     select = "SELECT * FROM Ratings WHERE isbn = " + isbn + " AND review_id IS NULL"
-    RatingSQL = fetch(select) # Step 5: Fetch Book's Ratings that have no Review
+    RatingSQL = fetch(select)
 
-    # Step 6: For Edit Book Modal
+    # Step 6: Fetch Book's Reviews that have NO Rating
+    select = "SELECT * FROM Reviews WHERE isbn = " + isbn + " AND rating_id IS NULL"
+    ReviewSQL = fetch(select)
+
+    # Step 7: For Edit Book Modal
     select = "SELECT Genres.genre_id, Genres.genre_name FROM Genres"
     all_genres = fetch(select)
     select = "SELECT Authors.author_id, Authors.author_name FROM Authors"
     all_authors = fetch(select)
 
-    return render_template('book.html', book=book, authors=authors, reviews=ReviewSQL, ratings=RatingSQL, all_genres=all_genres, all_authors=all_authors, rating_count=rating_count, int_avg=int_avg, float_avg=float_avg)
+    return render_template('book.html', book=book, authors=authors, ratings_with_reviews=ReviewRatingSQL, reviews=ReviewSQL, ratings=RatingSQL, all_genres=all_genres, all_authors=all_authors, rating_count=rating_count, int_avg=int_avg, float_avg=float_avg)
 
 # Something was changed, redisplay book page and give user message
 @app.route('/book/<string:isbn>/update/<string:code>')
@@ -111,19 +117,25 @@ def book_updated(isbn, code):
         int_avg = round(AvgRatingSQL[0]['average_rating'])
         rating_count = AvgRatingSQL[0]['rating_count']
 
+    # Step 4: Fetch Book's Reviews WITH Ratings
     select = "select book.isbn, rate.rating_id, rate.review_id, rate.star_rating, rate.rating_date, rev.review_content from Books book join Ratings rate on rate.isbn = book.isbn join Reviews rev on rev.isbn = rate.isbn where book.isbn = " + isbn + " AND rev.rating_id = rate.rating_id AND rate.review_id = rev.review_id"
-    ReviewSQL = fetch(select) # Step 4: Fetch Book's Reviews with Ratings
+    ReviewRatingSQL = fetch(select)
 
+    # Step 5: Fetch Book's Ratings that have NO Review
     select = "SELECT * FROM Ratings WHERE isbn = " + isbn + " AND review_id IS NULL"
-    RatingSQL = fetch(select) # Step 5: Fetch Book's Ratings that have no Review
+    RatingSQL = fetch(select)
 
-    # Step 6: For Edit Book Modal
+    # Step 6: Fetch Book's Reviews that have NO Rating
+    select = "SELECT * FROM Reviews WHERE isbn = " + isbn + " AND rating_id IS NULL"
+    ReviewSQL = fetch(select)
+
+    # Step 7: For Edit Book Modal
     select = "SELECT Genres.genre_id, Genres.genre_name FROM Genres"
     all_genres = fetch(select)
     select = "SELECT Authors.author_id, Authors.author_name FROM Authors"
     all_authors = fetch(select)
 
-    return render_template('book.html', book=book, authors=authors, reviews=ReviewSQL, ratings=RatingSQL, all_genres=all_genres, all_authors=all_authors, rating_count=rating_count, int_avg=int_avg, float_avg=float_avg, code_msg=code_msg, code=code)
+    return render_template('book.html', book=book, authors=authors, reviews=ReviewSQL, ratings=RatingSQL, ratings_with_reviews=ReviewRatingSQL, all_genres=all_genres, all_authors=all_authors, rating_count=rating_count, int_avg=int_avg, float_avg=float_avg, code_msg=code_msg, code=code)
 
 @app.route('/add_book', methods=['POST','GET'])
 def add_book():
@@ -194,7 +206,6 @@ def add_book():
 
         # Did not enter Authors, can do later
         else:
-            print("no author")
             code = "31" # Book added but without authors
 
         if code == "0":
@@ -207,6 +218,56 @@ def add_book():
 @app.route('/edit_book/<string:isbn>/', methods=['POST'])
 def edit_book(isbn):
     code = "0"
+
+    # Update Author(s)
+    if len(request.form.getlist('update_author')) != 0:
+
+        # Get the current author list for this book
+        select = 'SELECT ba.author_id FROM Books_Authors ba WHERE ba.isbn = ' + isbn
+        current_authors = fetch(select)
+        author_list = []
+        for x in current_authors:
+            v = x['author_id']
+            author_list.append(v)
+
+        # Determine which authors may only have one book to their name in our database
+        must_have = []
+        for auth in author_list:
+            select = "SELECT COUNT(ba.isbn) AS `book_count` FROM Books_Authors ba WHERE ba.author_id = " + str(auth)
+            book_count = fetch(select)
+            count = []
+            for x in book_count:
+                v = x['book_count']
+                count.append(v)
+            if count[0] == 1:
+                must_have.append(str(auth))
+
+
+        # Then get our new author list
+        new_authors = request.form.getlist('update_author')
+
+        # Check that all authors we could be leaving without a book are in the user's new selections
+        flag = all(x in new_authors for x in must_have)
+
+        # If the author selections are acceptable, go through with editing them
+        if flag == True:
+            # Delete all previous Books_Authors entries first, so there are no orphans
+            query = "DELETE FROM Books_Authors WHERE Books_Authors.isbn = %s"
+            values = (isbn)
+            db_query(query, values)
+
+            # Insert our new list
+            authors = request.form.getlist('update_author')
+            for author_id in authors:
+                query = 'INSERT INTO Books_Authors (isbn, author_id) VALUES (%s,%s)'
+                values = (isbn, author_id)
+                db_query(query, values) # Insert one or more Books_Authors entries
+
+        # Else, the author selections are unacceptable, notify user and abort editing book
+        else:
+            code = "2"
+            url = ("/book/" + isbn + "/update/" + code)
+            return redirect(url)
 
     # Update Book Title
     if request.form['update_title'] != '':
@@ -232,21 +293,9 @@ def edit_book(isbn):
             values = (year, isbn)
             db_query(query, values)
         else:
-            code = "2"
-
-    # Update Author(s)
-    if len(request.form.getlist('update_author')) != 0:
-        # Delete all previous Books_Authors entries first, so there are no orphans
-        query = "DELETE FROM Books_Authors WHERE Books_Authors.isbn = %s"
-        values = (isbn)
-        db_query(query, values)
-
-        # Then get our new list
-        authors = request.form.getlist('update_author')
-        for author_id in authors:
-            query = 'INSERT INTO Books_Authors (isbn, author_id) VALUES (%s,%s)'
-            values = (isbn, author_id)
-            db_query(query, values) # Insert one or more Books_Authors entries
+            code = "33" # Invalid year input
+            url = ("/book/" + isbn + "/update/" + code)
+            return redirect(url)
 
     # Update Genre(s)
     if len(request.form.getlist('update_genre')) != 0:
@@ -262,8 +311,8 @@ def edit_book(isbn):
             values = (isbn, genre_id)
             db_query(query, values) # Insert one or more Genres_Books entries
 
-    if code != "2": # If no known issues with book edit
-        code = "1" # Report book edit success
+    if code == "0": # If no known issues with book edit thus far
+        code = "1"  # Report book edit success
 
     url = ("/book/" + isbn + "/update/" + code)
     return redirect(url)
@@ -573,23 +622,81 @@ def rem_review(isbn, review_id):
 @app.route('/edit_review/<string:isbn>/<string:review_id>/', methods=['POST'])
 def edit_review(isbn, review_id):
     content = request.form['update_review_content']
-    content_string = ("'" + content + "'")
+    content = stringsafe(content)
 
-    query = "UPDATE Reviews SET review_content = %d WHERE review_id = %s"
-    values = (content_string, review_id)
+    query = "UPDATE Reviews SET review_content = %s WHERE review_id = %s"
+    values = (content, review_id)
     db_query(query, values)
 
     code = "13" # Review edit success code
     url = ("/book/" + isbn + "/update/" + code)
     return redirect(url)
 
-# Add a new rating/review
+# Add a new review
 @app.route('/add_review', methods=['POST','GET'])
 def add_review():
     if request.method == 'GET':
         select = "select book.isbn, book.book_title from Books book order by book.book_title ASC;"
         result = fetch(select)
         return render_template('add_review.html', books=result)
+
+    elif request.method == 'POST':
+        isbn = request.form['author_book']
+
+        # Adding a Rating from this form is optional, so see if the user
+        # chose to add one, or not
+        if request.form['user_rating'] != 'null':
+            # Step 1: Need new rating_id PK
+            select = "SELECT MAX(Ratings.rating_id) FROM Ratings"
+            result = fetch(select)
+            rating_id = result[0]['MAX(Ratings.rating_id)']
+            rating_id += 1
+
+            # Step 2: Fetch form info for Rating
+            star_rating = request.form['user_rating']
+            rating_date = time.strftime('%Y-%m-%d')
+
+            # Step 3: Insert Rating, Note: review_id initially disregarded as FK to avoid insert errors
+            query = 'INSERT INTO Ratings (rating_id, isbn, star_rating, rating_date) VALUES (%s,%s,%s,%s)'
+            values = (rating_id, isbn, star_rating, rating_date)
+            db_query(query, values)
+        else:
+            rating_id = None
+
+
+        # Step 4: If Review not empty...
+        if request.form['user_review'] != '':
+            # 4a. First, need a new review_id PK for our new Review entry
+            select = "SELECT MAX(Reviews.review_id) FROM Reviews"
+            result = fetch(select)
+            review_id = result[0]['MAX(Reviews.review_id)']
+            review_id += 1
+
+            # 4b. Second, fetch Review info from form and system
+            review_content = request.form['user_review']
+            review_date = time.strftime('%Y-%m-%d')
+
+            query = 'INSERT INTO Reviews (review_id, rating_id, isbn, review_content, review_date) VALUES (%s,%s,%s,%s,%s)'
+            values = (review_id, rating_id, isbn, review_content, review_date)
+            db_query(query, values) # 4c. Connect to database and add Review
+
+            # 4d. Last, update the Rating if we inserted one above with FK review_id
+            if rating_id is not None:
+                query = 'UPDATE Ratings set review_id = %s WHERE rating_id = %s'
+                values = (review_id, rating_id)
+                db_query(query, values)
+
+        code = "15" # Review/Rating add success
+        url = ("/book/" + isbn + "/update/" + code)
+        return redirect(url)
+
+# Add a new rating
+@app.route('/add_rating', methods=['POST','GET'])
+def add_rating():
+    if request.method == 'GET':
+        select = "select book.isbn, book.book_title from Books book order by book.book_title ASC;"
+        result = fetch(select)
+        return render_template('add_rating.html', books=result)
 
     elif request.method == 'POST':
         # Step 1: Need new rating_id PK

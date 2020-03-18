@@ -55,36 +55,36 @@ $("#add-author").click(function() {
   <h2 class="name">Add New Book: </h2>
   <form id="new_book" class="col-lg-6 mx-auto" action="/add_book" method="post">
 
-    <div class="form-group">
-        <label for="book_title">Title - required</label>
-        <input type="text" name="book_title" class="form-control input-lg" placeholder="The Handmaid's Tale" required="required">
-    </div>
+       <div class="form-group">
+            <label for="book_title">Title - required</label>
+            <input type="text" name="book_title" class="form-control input-lg" placeholder="The Handmaid's Tale" required="required">
+       </div>
 
-    <div id="author_section">
-      <div class="form-group">
-        <label for="book_author">Select Author(s) - pick at least one, OR add a new one below</label>
-        <select multiple class="form-control" id="book_author" name="book_author" data-max-options="5">
-        {% for author in authors %}
-          <option value="{{ author['author_id'] }}">{{ author['author_name'] }}</option>
-        {% endfor %}
-        </select>
-      </div>
+       <div id="author_section">
+            <div class="form-group">
+                 <label for="book_author">Select Author(s) - pick at least one, OR add a new one below</label>
+                 <select multiple class="form-control" id="book_author" name="book_author" data-max-options="5">
+                      {% for author in authors %}
+                      <option value="{{ author['author_id'] }}">{{ author['author_name'] }}</option>
+                      {% endfor %}
+                 </select>
+            </div>
 
-      <a onclick="showAddAuthor()" href="#">&plus; Add New Author</a>
+            <a onclick="showAddAuthor()" href="#">&plus; Add New Author</a>
 
-      <div id="add_author_div" class="bg-light my-2 p-2" style="display:none;">
-        <div class="form-group">
-          <label for="author_name">Author Name:</label>
-          <input type="text" name="author_name" class="form-control input-lg" placeholder="Toni Morrison">
-        </div>
+            <div id="add_author_div" class="bg-light my-2 p-2" style="display:none;">
+                 <div class="form-group">
+                      <label for="author_name">Author Name:</label>
+                      <input type="text" name="author_name" class="form-control input-lg" placeholder="Toni Morrison">
+                 </div>
 
-        <div class="form-group">
-          <label for="author_description">Author Bio:</label>
-          <textarea name="author_description" rows="6" class="form-control input-lg" placeholder="Write a blurb here"></textarea>
-        </div>
-      </div>
+                 <div class="form-group">
+                      <label for="author_description">Author Bio:</label>
+                      <textarea name="author_description" rows="6" class="form-control input-lg" placeholder="Write a blurb here"></textarea>
+                 </div>
+            </div>
 
-      <script language="javascript">
+            <script language="javascript">
       function showAddAuthor() {
         var x = document.getElementById("add_author_div");
         if (x.style.display === "none") {
@@ -93,74 +93,74 @@ $("#add-author").click(function() {
           x.style.display = "none";
         }
       }
-      </script>
+            </script>
 
-      <!-- This link opens the full Add Author modal that is not yet implemented -->
-      <!-- <a href="#" id="new-author" data-toggle="modal" data-target="#new-auth-modal">&plus; Add New Author</a> -->
-    </div>
+            <!-- This link opens the full Add Author modal that is not yet implemented -->
+            <!-- <a href="#" id="new-author" data-toggle="modal" data-target="#new-auth-modal">&plus; Add New Author</a> -->
+       </div>
 
-    <!-- Modal: Currently not used -->
-      <!-- <div class="modal" tabindex="-1" role="dialog" area-labelledby="Add New Author" area-hidden="true" id="new-auth-modal">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Add New Author</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="filter-input-container">
-                <label for="filter-author" class="filter-input-label">Author Name: </label>
-                <input type="text" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="Toni Morrison" required="required">
-            </div>
-            <div class="filter-input-container">
-                <label for="filter-author" class="filter-input-label">Author Bio: </label>
-                <input type="textarea" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="Write a blurb here" required="required">
-            </div>
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="uploadAuthorImg">
-              <label class="custom-file-label" for="uploadAuthorImg">Upload Author Image</label>
-            </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" onclick="addNewAuthor()" data-dismiss="modal">Save Changes</button>
-            </div>
-          </div>
-        </div>
-      </div> -->
+       <!-- Modal: Currently not used -->
+       <!-- <div class="modal" tabindex="-1" role="dialog" area-labelledby="Add New Author" area-hidden="true" id="new-auth-modal">
+       <div class="modal-dialog" role="document">
+         <div class="modal-content">
+           <div class="modal-header">
+             <h5 class="modal-title">Add New Author</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+             </button>
+           </div>
+           <div class="modal-body">
+             <div class="filter-input-container">
+               <label for="filter-author" class="filter-input-label">Author Name: </label>
+               <input type="text" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="Toni Morrison" required="required">
+           </div>
+           <div class="filter-input-container">
+               <label for="filter-author" class="filter-input-label">Author Bio: </label>
+               <input type="textarea" name="filter-author" id="filter-author" class="filter-input form-control" placeholder="Write a blurb here" required="required">
+           </div>
+           <div class="custom-file">
+             <input type="file" class="custom-file-input" id="uploadAuthorImg">
+             <label class="custom-file-label" for="uploadAuthorImg">Upload Author Image</label>
+           </div>
+           </div>
+           <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <button type="button" class="btn btn-primary" onclick="addNewAuthor()" data-dismiss="modal">Save Changes</button>
+           </div>
+         </div>
+       </div>
+     </div> -->
 
-      <div class="form-group mt-3">
-        <label for="book_isbn">ISBN-10 - required</label>
-        <input type="number" name="book_isbn" class="form-control" placeholder="98735513209" required="required">
-        <!-- Below is the same input as above, but with Kayla's nifty validateISBN function! I have it commented out for now because it was being cranky with me and didn't accept even valid inputs. How rude. -->
-        <!-- <input type="number" name="book_isbn" class="form-control" placeholder="98735513209" oninput="validateISBN(this)" pattern=".{10,10}" required="required"> -->
-      </div>
+       <div class="form-group mt-3">
+            <label for="book_isbn">ISBN-10 - required</label>
+            <input type="number" name="book_isbn" class="form-control" placeholder="98735513209" oninput="validateISBN(this)" pattern=".{10,10}" required="required">
+       </div>
 
-      <div class="form-group">
-        <label for="book_year">Year Published - required</label>
-        <input type="number" name="book_year" class="form-control" placeholder="2007" required="required">
-      </div>
+       <div class="form-group">
+            <label for="book_year">Year Published - required</label>
+            <input type="number" name="book_year" class="form-control" placeholder="2007" required="required" oninput="validateYear(this)">
+       </div>
 
-      <div class="form-group">
-        <label for="book_genre">Genre(s) - pick at least one</label>
-        <select multiple class="form-control" name="book_genre" id="book_genre" required="required">
-        {% for genre in genres %}
-          <option value="{{ genre['genre_id'] }}">{{ genre['genre_name'] }}</option>
-        {% endfor %}
-        </select>
-      </div>
+       <div class="form-group">
+            <label for="book_genre">Genre(s) - pick at least one</label>
+            <select multiple class="form-control" name="book_genre" id="book_genre" required="required">
+                 {% for genre in genres %}
+                 <option value="{{ genre['genre_id'] }}">{{ genre['genre_name'] }}</option>
+                 {% endfor %}
+            </select>
+       </div>
 
-      <div class="form-group">
-        <label for="book_description">Book Description:</label>
-        <textarea name="book_description" rows="6" class="form-control input-lg"></textarea>
-      </div>
-      <div class="custom-file">
-        <input type="file" class="custom-file-input" id="uploadBookImg">
-        <label class="custom-file-label" for="uploadBookImg">Upload Book Image</label>
-      </div>
-    <button type="submit" id="add-book-button" class="action-button btn btn-primary mt-4">Add Book to Paperstacks</button>
+       <div class="form-group">
+            <label for="book_description">Book Description:</label>
+            <textarea name="book_description" rows="6" class="form-control input-lg"></textarea>
+       </div>
+       <!-- Taking this part out - not implementing images at this time
+     <div class="custom-file">
+       <input type="file" class="custom-file-input" id="uploadBookImg">
+       <label class="custom-file-label" for="uploadBookImg">Upload Book Image</label>
+     </div>
+      -->
+       <button type="submit" id="add-book-button" class="action-button btn btn-primary mt-4">Add Book to Paperstacks</button>
   </form>
 
 {% endblock %}

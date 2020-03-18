@@ -3,7 +3,7 @@
 
 {% block body %}
   <div class="jumbotron text-center mt-4">
-    <h2 class="name">Add Review</h2>
+    <h2 class="name">Add Rating</h2>
     <form id="new_review" class="col-lg-6 mx-auto" action="/add_review" method="post">
 
       <div class="form-group">
@@ -16,20 +16,19 @@
       </div>
 
       <div class="form-group">
-        <label for="user_rating">Your Rating (optional)</label>
+        <label for="user_rating">Your Rating</label>
         <select class="form-control" name="user_rating">
-          <option value="null"></option>
           <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
           <option value="4">&#9733;&#9733;&#9733;&#9733;&#9734;</option>
           <option value="3">&#9733;&#9733;&#9733;&#9734;&#9734;</option>
           <option value="2">&#9733;&#9733;&#9734;&#9734;&#9734;</option>
-          <option value="1">&#9733;&#9734;&#9734;&#9734;&#9734; :(</option>
+          <option value="1">&#9733;&#9734;&#9734;&#9734;&#9734;</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="user_review">Review:</label>
-        <textarea name="user_review" rows="4" class="form-control input-lg" placeholder="Write your review here to help other Paperstacks readers find good books!" required=required></textarea>
+        <label for="user_review">Review (optional):</label>
+        <textarea name="user_review" rows="4" class="form-control input-lg" placeholder="Write your review here to help other Paperstacks readers find good books!"></textarea>
       </div>
 
       <button type="submit" id="add-review-button" class="action-button btn btn-secondary mt-3">Submit</button>

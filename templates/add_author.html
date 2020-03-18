@@ -6,32 +6,33 @@
     <h2 class="name">Add New Author</h2>
     <form id="new_author" class="col-lg-6 mx-auto" action="/add_author" method="post">
 
-        <p>Note: an Author MUST be associated with at least one book. Please assign the author to a book in our database, or add the book first.</p>
+         <p>Note: an Author MUST be associated with at least one book. Please assign the author to a book in our database, or add the book first.</p>
 
-        <div class="form-group">
-          <label for="author_name">Author Name:</label>
-          <input type="text" name="author_name" class="form-control input-lg" placeholder="Toni Morrison" required="required">
-        </div>
+         <div class="form-group">
+              <label for="author_name">Author Name:</label>
+              <input type="text" name="author_name" class="form-control input-lg" placeholder="Toni Morrison" required="required">
+         </div>
 
-        <div class="form-group">
-          <label for="author_description">Author Bio:</label>
-          <textarea name="author_description" rows="6" class="form-control input-lg" placeholder="Write a blurb here" required="required"></textarea>
-        </div>
+         <div class="form-group">
+              <label for="author_description">Author Bio:</label>
+              <textarea name="author_description" rows="6" class="form-control input-lg" placeholder="Write a blurb here" required="required"></textarea>
+         </div>
 
-        <div class="form-group">
-          <label for="author_book">What book did they write? (select one for now):</label>
-          <select name="author_book" class="form-control">
-            {% for book in books %}
-            <option value="{{ book['isbn'] }}">{{ book['book_title'] }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="custom-file">
-          <input type="file" class="custom-file-input" id="uploadAuthorImg">
-          <label class="custom-file-label" for="uploadAuthorImg">Upload Author Image</label>
-        </div>
-
-        <button type="submit" id="add-author-button" class="action-button btn btn-primary mt-3">Add Author to Paperstacks</button>
-    </form>
-  </div>
-{% endblock %}
+         <div class="form-group">
+              <label for="author_book">What book did they write? (select one for now):</label>
+              <select name="author_book" class="form-control">
+                   {% for book in books %}
+                   <option value="{{ book['isbn'] }}">{{ book['book_title'] }}</option>
+                   {% endfor %}
+              </select>
+         </div>
+         <!-- Taking this part out - not implementing images at this time
+             <div class="custom-file">
+               <input type="file" class="custom-file-input" id="uploadAuthorImg">
+               <label class="custom-file-label" for="uploadAuthorImg">Upload Author Image</label>
+             </div>
+              -->
+             <button type="submit" id="add-author-button" class="action-button btn btn-primary mt-3">Add Author to Paperstacks</button>
+         </form>
+       </div>
+     {% endblock %}
